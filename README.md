@@ -7,10 +7,9 @@ Python package to handle manga download and upload to firebase
 python3 -m venv myenv
 source myenv/bin/activate
 
-pip3 install requests beautifulsoup4
-pip install selenium webdriver-manager
+pip3 install requests beautifulsoup4 pillow
 
 ## Run script 
 
-python3 manga_scraper.py One_Piece
+python3 dl_manager.py manga-ma89768
 

@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 import sys
+from file_helper import download_file, convert_webp_to_png
 
 BASE_URL = "https://chapmanganelo.com/"
 
@@ -39,16 +40,17 @@ def get_chapter_links(manga_id):
     # Extract Genres (Fixed Warning)
     genre_tags = soup.select_one("td:-soup-contains('Genres')")
     manga_info["genres"] = [g.text.strip() for g in genre_tags.find_next_sibling("td").select("a")] if genre_tags else []
-    
-    print(manga_info)
 
     chapter_links = []
     for link in soup.select(".panel-story-chapter-list a"):
         chapter_url = link.get("href")
         if chapter_url:
             chapter_links.append(chapter_url)
+            
+    pictureName = download_file(manga_info["picture"], "./")
+    convert_webp_to_png(pictureName)
 
-    return chapter_links
+    return chapter_links, manga_info
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
@@ -56,6 +58,8 @@ if __name__ == "__main__":
         sys.exit(1)
 
     manga_id = sys.argv[1]  # Get the manga ID from the command-line argument
-    chapter_links = get_chapter_links(manga_id)
+    chapter_links, manga_info = get_chapter_links(manga_id)
 
-    print('Chapters ')
+    print(manga_info)
+    
+    

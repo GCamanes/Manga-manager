@@ -1,1 +1,4 @@
 /myenv
+*.pyc
+/*.png
+/*.webp
