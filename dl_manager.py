@@ -1,17 +1,15 @@
 import requests
 from bs4 import BeautifulSoup
 import sys
+from entities.chapter import Chapter
+from entities.manga_info import MangaInfo
 from file_helper import download_file, convert_webp_to_png
 
-BASE_URL = "https://chapmanganelo.com/"
+BASE_URL = "https://mangapark.io/title/"
 
-def get_chapter_links(manga_id):
+def get_manga_info(manga_id):
     manga_url = f"{BASE_URL}{manga_id}"
-
-    headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36"
-    }
-
+    headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"}
     response = requests.get(manga_url, headers=headers)
 
     if response.status_code != 200:
@@ -20,37 +18,42 @@ def get_chapter_links(manga_id):
 
     soup = BeautifulSoup(response.text, "html.parser")
     
-    # Extract Manga Information
-    manga_info = {}
-    manga_info["name"] = soup.select_one("div.story-info-right h1").text.strip() if soup.select_one("div.story-info-right h1") else "N/A"
-    manga_info["picture"] = soup.select_one("div.story-info-left img")["src"] if soup.select_one("div.story-info-left img") else "N/A"
+    # get main div
+    main_element = soup.select_one('main')
+    
+    # Extract manga title
+    title = main_element.select_one('a.link.link-hover').text.strip()
+    # Extract genres
+    genres_tag = main_element.select_one('b', string='Genres:')
+    genres_parent = genres_tag.find_parent('div')
+    genres = [child.get('q:key') for child in genres_parent.children if child.name == 'span']
+    # Extract authors
+    authors = []
+    for a_tag in main_element.select_one('div').select_one('div').find_all('a'):
+        href = a_tag.get('href')
+        if href and "/search" in href:
+            authors.append(a_tag.get_text().strip())
+    # Extract status
+    status_tag = main_element.select_one('span:-soup-contains("Original Publication:")')
+    status_parent = status_tag.find_parent('div')
+    status = status_parent.select_one('span.font-bold.uppercase').text.strip()
+    #status_elem = soup.select_one('.meta span:-soup-contains("Status")')
+    #status = status_elem.find_next_sibling("span").text.strip() if status_elem else "Unknown"
+    # Extract last updated
+    #last_updated_elem = soup.select_one('.meta span:-soup-contains("Updated")')
+    #last_updated = last_updated_elem.find_next_sibling("span").text.strip() if last_updated_elem else "Unknown"
+    # Extract image URL
+    #image_url = soup.select_one(".manga-thumbnail img")["src"]
 
-    # Extract Status
-    status_tag = soup.select_one("td:-soup-contains('Status')")
-    manga_info["status"] = status_tag.find_next_sibling("td").text.strip() if status_tag else "N/A"
-
-    # Extract Last Update
-    last_update_tag = soup.select_one("span.stre-label:-soup-contains('Updated :')")
-    manga_info["last_update"] = last_update_tag.find_next_sibling("span").text.strip() if last_update_tag else "N/A"
-
-    # Extract Authors
-    author_tag = soup.select_one("td:-soup-contains('Author(s)')")
-    manga_info["authors"] = author_tag.find_next_sibling("td").text.strip() if author_tag else "N/A"
+    ###chapters = []
+    #for chapter in soup.select(".chapter-list a"):
+    #    chapter_url = chapter["href"]
+    #    chapters.append(Chapter("https://mangafire.to" + chapter_url))
         
-    # Extract Genres (Fixed Warning)
-    genre_tags = soup.select_one("td:-soup-contains('Genres')")
-    manga_info["genres"] = [g.text.strip() for g in genre_tags.find_next_sibling("td").select("a")] if genre_tags else []
-
-    chapter_links = []
-    for link in soup.select(".panel-story-chapter-list a"):
-        chapter_url = link.get("href")
-        if chapter_url:
-            chapter_links.append(chapter_url)
-            
-    pictureName = download_file(manga_info["picture"], "./")
-    convert_webp_to_png(pictureName)
-
-    return chapter_links, manga_info
+    #pictureName = download_file(image_url, "./")
+    #convert_webp_to_png(pictureName)
+    
+    return MangaInfo(manga_id, title, authors, genres, status, None, None)
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
@@ -58,8 +61,8 @@ if __name__ == "__main__":
         sys.exit(1)
 
     manga_id = sys.argv[1]  # Get the manga ID from the command-line argument
-    chapter_links, manga_info = get_chapter_links(manga_id)
-
+    manga_info = get_manga_info(manga_id)
+    print(manga_id)
     print(manga_info)
-    
+
     
