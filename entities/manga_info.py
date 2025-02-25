@@ -2,7 +2,7 @@ import re
 
 class MangaInfo:
     """Represents a manga with its information and list of chapters."""
-    def __init__(self, id, title, authors, genres, status, last_updated, chapters):
+    def __init__(self, id, title, authors, genres, status, chapters):
         self.id = id,
         self.title = title
         self.authors = authors
