@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 import requests
 from constants import Constants
 from entities.manga_info import MangaInfo
+from helpers.chapter_helper import ChapterHelper
 
 class MangaHelper:
     @staticmethod
@@ -44,10 +45,11 @@ class MangaHelper:
         ## Filter links containing "ch." or "chapter-" in lower case
         filtered_links = [
             link for link in matching_links
-            if "ch-" in link.get("href").lower() or "chapter-" in link.get("href").lower()
+            if ChapterHelper.get_matching_link(link.get("href")) != None
         ]
         for link in filtered_links:
             print(link.get("href"))
+            
         #for chapter in soup.select(".chapter-list a"):
         #    chapter_url = chapter["href"]
         #    chapters.append(Chapter("https://mangafire.to" + chapter_url))

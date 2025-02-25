@@ -6,3 +6,6 @@ class Constants:
         WEBSITE = f"https://mangapark.io/"
         TITLE_PATH = f"title/"
         BASE_URL = f"{WEBSITE}{TITLE_PATH}"
+        
+    class chapter:
+        FILTERS = ["ch-", "chapter-"]
