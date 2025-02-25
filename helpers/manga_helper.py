@@ -1,3 +1,4 @@
+import re
 from bs4 import BeautifulSoup
 import requests
 from constants import Constants
@@ -36,7 +37,17 @@ class MangaHelper:
         # Extract image URL
         #image_url = soup.select_one(".manga-thumbnail img")["src"]
 
-        ###chapters = []
+        # Extract chapters list
+        chapter_list_div = soup.find('div', attrs={'data-name': 'chapter-list'})
+        ## Find all <a> tags that match the manga pattern
+        matching_links = chapter_list_div.find_all('a', href=re.compile(rf"^/title/{re.escape(manga_id)}/.*"))
+        ## Filter links containing "ch." or "chapter-" in lower case
+        filtered_links = [
+            link for link in matching_links
+            if "ch-" in link.get("href").lower() or "chapter-" in link.get("href").lower()
+        ]
+        for link in filtered_links:
+            print(link.get("href"))
         #for chapter in soup.select(".chapter-list a"):
         #    chapter_url = chapter["href"]
         #    chapters.append(Chapter("https://mangafire.to" + chapter_url))
@@ -44,4 +55,4 @@ class MangaHelper:
         #pictureName = download_file(image_url, "./")
         #convert_webp_to_png(pictureName)
         
-        return MangaInfo(manga_id, title, authors, genres, status, None)
+        return MangaInfo(manga_id, title, authors, genres, status, filtered_links)

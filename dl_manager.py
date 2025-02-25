@@ -8,7 +8,6 @@ if __name__ == "__main__":
 
     manga_id = sys.argv[1]  # Get the manga ID from the command-line argument
     manga_info = MangaHelper.get_manga_info(manga_id)
-    print(manga_id)
     print(manga_info)
 
     
