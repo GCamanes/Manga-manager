@@ -37,7 +37,7 @@ class MangaHelper:
         status_parent = status_tag.find_parent('div')
         status = status_parent.select_one('span.font-bold.uppercase').text.strip()
         # Extract image URL
-        #image_url = soup.select_one(".manga-thumbnail img")["src"]
+        coverLink = main_element.select_one('img').get("src")
 
         # Extract chapters list
         chapter_list_div = soup.find('div', attrs={'data-name': 'chapter-list'})
@@ -53,4 +53,4 @@ class MangaHelper:
         #pictureName = download_file(image_url, "./")
         #convert_webp_to_png(pictureName)
         
-        return MangaInfo(manga_id, title, authors, genres, status, chapters)
+        return MangaInfo(manga_id, title, coverLink, authors, genres, status, chapters)
