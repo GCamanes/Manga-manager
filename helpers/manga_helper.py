@@ -2,7 +2,7 @@ import re
 from bs4 import BeautifulSoup
 import requests
 from constants import Constants
-from entities.chapter import ChapterInfo
+from entities.chapter_info import ChapterInfo
 from entities.manga_info import MangaInfo
 from helpers.chapter_helper import ChapterHelper
 
