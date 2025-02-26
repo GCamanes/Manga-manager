@@ -11,6 +11,5 @@ class MangaInfo:
         self.chapters = chapters
 
     def __repr__(self):
-        return (f"Manga(title={self.title}, id={self.id}, authors={self.authors}, genres={self.genres}, "
-                f"status={self.status}"
-                f"chapters({len(self.chapters)})")
+        return (f"#### Manga {self.title}\n* id={self.id}\n* authors={self.authors}\n* genres={self.genres}\n"
+                f"* status={self.status}\n* chapters({len(self.chapters)})={self.chapters})")

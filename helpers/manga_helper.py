@@ -2,6 +2,7 @@ import re
 from bs4 import BeautifulSoup
 import requests
 from constants import Constants
+from entities.chapter import ChapterInfo
 from entities.manga_info import MangaInfo
 from helpers.chapter_helper import ChapterHelper
 
@@ -47,14 +48,9 @@ class MangaHelper:
             link for link in matching_links
             if ChapterHelper.get_matching_link(link.get("href")) != None
         ]
-        for link in filtered_links:
-            print(link.get("href"))
-            
-        #for chapter in soup.select(".chapter-list a"):
-        #    chapter_url = chapter["href"]
-        #    chapters.append(Chapter("https://mangafire.to" + chapter_url))
+        chapters = [ChapterInfo(link.get("href")) for link in filtered_links]
             
         #pictureName = download_file(image_url, "./")
         #convert_webp_to_png(pictureName)
         
-        return MangaInfo(manga_id, title, authors, genres, status, filtered_links)
+        return MangaInfo(manga_id, title, authors, genres, status, chapters)
