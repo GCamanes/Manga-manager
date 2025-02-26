@@ -2,6 +2,10 @@ import argparse
 import sys
 from helpers.manga_helper import MangaHelper
 
+def download_manga(manga_id):
+    manga_info = MangaHelper.get_manga_info(manga_id)
+    print(manga_info)
+
 if __name__ == "__main__":
     # Definition of argument option
     parser = argparse.ArgumentParser(prog="dl_manager.py")
@@ -13,8 +17,7 @@ if __name__ == "__main__":
     args = parser.parse_args(sys.argv[1:])
     
     if args.dlmanga is not None:
-        manga_info = MangaHelper.get_manga_info(args.dlmanga[0])
-        print(manga_info)
+        download_manga(args.dlmanga[0])
         sys.exit()
 
     
