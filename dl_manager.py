@@ -1,10 +1,13 @@
 import argparse
 import sys
+from constants import Constants
+from helpers.file_helper import FileHelper
 from helpers.manga_helper import MangaHelper
 
 def download_manga(manga_id):
     manga_info = MangaHelper.get_manga_info(manga_id)
     print(manga_info)
+    FileHelper.create_folder(f"{Constants.general.DL_PATH}/{manga_id}")
 
 if __name__ == "__main__":
     # Definition of argument option
