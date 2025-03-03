@@ -9,6 +9,8 @@ class FileHelper:
     def create_folder(path):
         if not os.path.exists(path):
             os.makedirs(path)
+            return True
+        return False
 
     # Function to download a file from a URL
     @staticmethod

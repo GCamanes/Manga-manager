@@ -90,3 +90,10 @@ class MangaHelper:
         cover_path = FileHelper.convert_webp_to_png(cover_path)
         manga.cover_path = "/".join(cover_path.split("/")[1:])
         MangaHelper.save_manga_to_json(manga)
+        
+    @staticmethod
+    def download_manga(manga: MangaInfo):
+        for chapter in manga.chapters[::-1][:10]:
+            chapter_path = f"{MangaHelper.get_manga_path(manga.id)}{chapter.number}"
+            if FileHelper.create_folder(chapter_path):
+                print(chapter.number)
