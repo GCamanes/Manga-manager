@@ -7,6 +7,7 @@ from constants import Constants
 from entities.chapter_info import ChapterInfo
 from entities.manga_info import MangaInfo
 from helpers.chapter_helper import ChapterHelper
+from helpers.file_helper import FileHelper
 
 class MangaHelper:
     @staticmethod
@@ -62,6 +63,10 @@ class MangaHelper:
         return f"{Constants.general.DL_PATH}/{id}/"
     
     @staticmethod
+    def download_cover(manga: MangaInfo):
+        return manga
+    
+    @staticmethod
     def get_manga_json_path(id: str):
         return f"{MangaHelper.get_manga_path(id)}{id}.json"
 
@@ -77,3 +82,11 @@ class MangaHelper:
         with open(filename, "r", encoding="utf-8") as f:
             data = json.load(f)
         return MangaInfo.from_dict(data)
+    
+    @staticmethod
+    def save_manga(manga: MangaInfo):
+        FileHelper.create_folder(f"{Constants.general.DL_PATH}/{manga.id}")
+        cover_path = FileHelper.download_file(manga.cover_path, MangaHelper.get_manga_path(manga.id), manga.id)
+        cover_path = FileHelper.convert_webp_to_png(cover_path)
+        manga.cover_path = "/".join(cover_path.split("/")[1:])
+        MangaHelper.save_manga_to_json(manga)

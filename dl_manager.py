@@ -7,10 +7,7 @@ from helpers.manga_helper import MangaHelper
 def download_manga(manga_id):
     manga_info = MangaHelper.get_manga_info(manga_id)
     print(manga_info)
-    FileHelper.create_folder(f"{Constants.general.DL_PATH}/{manga_id}")
-    previous_manga_info = MangaHelper.load_manga_from_json(MangaHelper.get_manga_json_path(manga_info.id))
-    MangaHelper.save_manga_to_json(manga_info)
-    print(previous_manga_info)
+    MangaHelper.save_manga(manga=manga_info)
 
 if __name__ == "__main__":
     # Definition of argument option
