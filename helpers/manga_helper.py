@@ -1,3 +1,5 @@
+import json
+import os
 import re
 from bs4 import BeautifulSoup
 import requests
@@ -48,9 +50,26 @@ class MangaHelper:
             link for link in matching_links
             if ChapterHelper.get_matching_link(link.get("href")) != None
         ]
-        chapters = [ChapterInfo(link.get("href")) for link in filtered_links]
+        chapters = [ChapterInfo(ChapterHelper.extract_chap_number_from_link(link.get("href")), link.get("href")) for link in filtered_links]
             
         #pictureName = download_file(image_url, "./")
         #convert_webp_to_png(pictureName)
         
         return MangaInfo(manga_id, title, coverLink, authors, genres, status, chapters)
+    
+    @staticmethod
+    def get_manga_json_path(id: str):
+        return f"{Constants.general.DL_PATH}/{id}/{id}.json"
+
+    @staticmethod
+    def save_manga_to_json(manga: MangaInfo):
+        with open(MangaHelper.get_manga_json_path(manga.id), "w", encoding="utf-8") as f:
+            json.dump(manga.to_dict(), f, indent=4)
+
+    @staticmethod
+    def load_manga_from_json(filename: str) -> MangaInfo | None:
+        if not os.path.exists(filename):
+            return None
+        with open(filename, "r", encoding="utf-8") as f:
+            data = json.load(f)
+        return MangaInfo.from_dict(data)

@@ -1,7 +1,6 @@
-from typing import TYPE_CHECKING
 
-if TYPE_CHECKING:
-    from entities.chapter_info import ChapterInfo
+from entities.chapter_info import ChapterInfo
+
 
 class MangaInfo:
     """Represents a manga with its information and list of chapters."""
@@ -17,3 +16,27 @@ class MangaInfo:
     def __repr__(self):
         return (f"#### Manga {self.title}\n* id={self.id}\n* cover={self.coverLink}\n* authors={self.authors}\n* genres={self.genres}\n"
                 f"* status={self.status}\n* chapters({len(self.chapters) if self.chapters != None else 0})")
+        
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "title": self.title,
+            "coverLink": self.coverLink,
+            "authors": self.authors,
+            "genres": self.genres,
+            "status": self.status,
+            "chapters": [chapter.to_dict() for chapter in self.chapters]
+        }
+
+    @classmethod
+    def from_dict(cls, data):
+        chapters = [ChapterInfo.from_dict(chap) for chap in data.get("chapters", [])]
+        return cls(
+            data["id"],
+            data["title"],
+            data["coverLink"],
+            data["authors"],
+            data["genres"],
+            data["status"],
+            chapters
+        )
