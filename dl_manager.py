@@ -8,8 +8,8 @@ def download_manga(manga_id):
     manga_info = MangaHelper.get_manga_info(manga_id)
     print(manga_info)
     FileHelper.create_folder(f"{Constants.general.DL_PATH}/{manga_id}")
-    #MangaHelper.save_manga_to_json(manga_info)
     previous_manga_info = MangaHelper.load_manga_from_json(MangaHelper.get_manga_json_path(manga_info.id))
+    MangaHelper.save_manga_to_json(manga_info)
     print(previous_manga_info)
 
 if __name__ == "__main__":

@@ -39,7 +39,7 @@ class MangaHelper:
         status_parent = status_tag.find_parent('div')
         status = status_parent.select_one('span.font-bold.uppercase').text.strip()
         # Extract image URL
-        coverLink = main_element.select_one('img').get("src")
+        cover_path = main_element.select_one('img').get("src")
 
         # Extract chapters list
         chapter_list_div = soup.find('div', attrs={'data-name': 'chapter-list'})
@@ -55,11 +55,15 @@ class MangaHelper:
         #pictureName = download_file(image_url, "./")
         #convert_webp_to_png(pictureName)
         
-        return MangaInfo(manga_id, title, coverLink, authors, genres, status, chapters)
+        return MangaInfo(manga_id, title, cover_path, authors, genres, status, chapters)
+    
+    @staticmethod
+    def get_manga_path(id: str):
+        return f"{Constants.general.DL_PATH}/{id}/"
     
     @staticmethod
     def get_manga_json_path(id: str):
-        return f"{Constants.general.DL_PATH}/{id}/{id}.json"
+        return f"{MangaHelper.get_manga_path(id)}{id}.json"
 
     @staticmethod
     def save_manga_to_json(manga: MangaInfo):
