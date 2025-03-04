@@ -82,7 +82,7 @@ class MangaHelper:
         with open(filename, "r", encoding="utf-8") as f:
             data = json.load(f)
         return MangaInfo.from_dict(data)
-    
+
     @staticmethod
     def save_manga(manga: MangaInfo):
         FileHelper.create_folder(f"{Constants.general.DL_PATH}/{manga.id}")
@@ -90,11 +90,13 @@ class MangaHelper:
         cover_path = FileHelper.convert_webp_to_png(cover_path)
         manga.cover_path = "/".join(cover_path.split("/")[1:])
         MangaHelper.save_manga_to_json(manga)
-        
+
     @staticmethod
     def download_manga(manga: MangaInfo):
         for chapter in manga.chapters[::-1][:1]:
             chapter_path = f"{MangaHelper.get_manga_path(manga.id)}{chapter.number}"
             if not FileHelper.create_folder(chapter_path):
                 pages = ChapterHelper.get_chapter_pages_list(chapter.link)
-                print(pages)
+                for index, page in enumerate(pages):
+                    FileHelper.download_file(page, chapter_path, f"{index}".zfill(3))
+                
