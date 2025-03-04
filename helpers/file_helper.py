@@ -24,7 +24,6 @@ class FileHelper:
         if response.status_code == 200:
             with open(destination_path, 'wb') as file:
                 file.write(response.content)
-            print(f"File downloaded successfully: {destination_path}")
             return destination_path
         else:
             print(f"Failed to download file. Status code: {response.status_code}")

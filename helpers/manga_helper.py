@@ -12,7 +12,7 @@ from helpers.file_helper import FileHelper
 class MangaHelper:
     @staticmethod
     def get_manga_info(manga_id):
-        manga_url = f"{Constants.general.BASE_URL}{manga_id}"
+        manga_url = f"{Constants.general.BASE_TITLE_URL}{manga_id}"
         headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"}
         response = requests.get(manga_url, headers=headers)
         if response.status_code != 200:
@@ -93,7 +93,8 @@ class MangaHelper:
         
     @staticmethod
     def download_manga(manga: MangaInfo):
-        for chapter in manga.chapters[::-1][:10]:
+        for chapter in manga.chapters[::-1][:1]:
             chapter_path = f"{MangaHelper.get_manga_path(manga.id)}{chapter.number}"
-            if FileHelper.create_folder(chapter_path):
-                print(chapter.number)
+            if not FileHelper.create_folder(chapter_path):
+                pages = ChapterHelper.get_chapter_pages_list(chapter.link)
+                print(pages)
