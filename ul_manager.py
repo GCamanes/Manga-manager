@@ -1,11 +1,11 @@
 import argparse
+import json
 import sys
 from constants import Constants
 import firebase_admin
 from firebase_admin import credentials, firestore, storage
 
-def upload_manga(manga_id):
-    print(f"# Uploading {manga_id} ...")
+from helpers.firebase_helper import FirebaseHelper
 
 if __name__ == "__main__":
     # Definition of argument option
@@ -16,9 +16,12 @@ if __name__ == "__main__":
 
     # Parsing of command line argument
     args = parser.parse_args(sys.argv[1:])
+    
+    # Initializing firebase
+    firebaseHelper = FirebaseHelper()
 
     if args.upload is not None:
-        upload_manga(args.upload[0])
+        firebaseHelper.upload_manga(args.upload[0])
         sys.exit()
 
     

@@ -9,7 +9,8 @@ class Constants:
         DL_PATH = ".manga"
         
     class firebase:
-        fb_account_file = "ServiceAccountKey.json"
+        service_account_key = "ServiceAccountKey.json"
+        mangas_collection = "mangas"
         
     class chapter:
         FILTERS = ["ch-", "chapter-"]
