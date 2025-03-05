@@ -8,5 +8,8 @@ class Constants:
         BASE_TITLE_URL = f"{WEBSITE}/{TITLE_PATH}/"
         DL_PATH = ".manga"
         
+    class firebase:
+        fb_account_file = "ServiceAccountKey.json"
+        
     class chapter:
         FILTERS = ["ch-", "chapter-"]
