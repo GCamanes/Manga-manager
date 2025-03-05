@@ -21,7 +21,7 @@ class ChapterHelper:
         filter_text = ChapterHelper.get_matching_link(link)
         chapter_parts = link.split(filter_text)[-1].split("-")
         chapter_parts[0] = str(chapter_parts[0]).zfill(4)
-        return ".".join(chapter_parts)
+        return ".".join(chapter_parts[:2])
     
     @staticmethod
     def get_chapter_pages_list(link: str):

@@ -1,6 +1,8 @@
 import json
+import math
 import os
 import re
+import sys
 from bs4 import BeautifulSoup
 import requests
 from constants import Constants
@@ -93,10 +95,17 @@ class MangaHelper:
 
     @staticmethod
     def download_manga(manga: MangaInfo):
-        for chapter in manga.chapters[::-1][:1]:
+        for chapter in manga.chapters[::-1]:
             chapter_path = f"{MangaHelper.get_manga_path(manga.id)}{chapter.number}"
-            if not FileHelper.create_folder(chapter_path):
+            if FileHelper.create_folder(chapter_path):
+                sys.stdout.write(f"\r\033[K* chapter {chapter.number} ...")
+                sys.stdout.flush()
                 pages = ChapterHelper.get_chapter_pages_list(chapter.link)
                 for index, page in enumerate(pages):
+                    percent = math.floor((index + 1) * 100 / len(pages))
+                    barIndex = math.floor(percent/10) 
+                    bar = "#" * barIndex + " " * (10 - barIndex)
                     FileHelper.download_file(page, chapter_path, f"{index}".zfill(3))
+                    sys.stdout.write(f"\r\033[K* chapter {chapter.number} : [{bar}] {percent}%")
+                    sys.stdout.flush()
                 

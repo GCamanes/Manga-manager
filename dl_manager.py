@@ -5,8 +5,8 @@ from helpers.file_helper import FileHelper
 from helpers.manga_helper import MangaHelper
 
 def download_manga(manga_id):
+    print(f"# Downloading {manga_id} ...")
     manga_info = MangaHelper.get_manga_info(manga_id)
-    print(manga_info)
     MangaHelper.save_manga(manga=manga_info)
     MangaHelper.download_manga(manga=manga_info)
 
