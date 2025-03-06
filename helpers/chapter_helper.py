@@ -79,8 +79,11 @@ class ChapterHelper:
 
     @staticmethod
     def load_chapter_from_json(filename: str) -> MangaInfo | None:
-        if not os.path.exists(filename):
-            return None
-        with open(filename, "r", encoding="utf-8") as f:
-            data = json.load(f)
-        return ChapterPagesInfo.from_dict(data)
+        try:
+            if not os.path.exists(filename):
+                raise ValueError(f"Failed to load json file {filename} {e}")
+            with open(filename, "r", encoding="utf-8") as f:
+                data = json.load(f)
+            return ChapterPagesInfo.from_dict(data)
+        except Exception as e:
+            raise e
