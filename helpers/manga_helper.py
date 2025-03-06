@@ -7,9 +7,11 @@ from bs4 import BeautifulSoup
 import requests
 from constants import Constants
 from entities.chapter_info import ChapterInfo
+from entities.chapter_pages_info import ChapterPagesInfo
 from entities.manga_info import MangaInfo
 from helpers.chapter_helper import ChapterHelper
 from helpers.file_helper import FileHelper
+from helpers.path_helper import PathHelper
 
 class MangaHelper:
     @staticmethod
@@ -61,22 +63,14 @@ class MangaHelper:
             return MangaInfo(manga_id, title, cover_path, authors, genres, status, chapters)
         except Exception as e:
             raise ValueError(f"Failed to get {manga_id} info {e}")
-    
-    @staticmethod
-    def get_manga_path(id: str):
-        return f"{Constants.general.DL_PATH}/{id}/"
-    
-    @staticmethod
-    def get_manga_json_path(id: str):
-        return f"{MangaHelper.get_manga_path(id)}{id}.json"
 
     @staticmethod
     def save_manga_to_json(manga: MangaInfo):
         try:
-            with open(MangaHelper.get_manga_json_path(manga.id), "w", encoding="utf-8") as f:
+            with open(PathHelper.get_manga_json_path(manga.id), "w", encoding="utf-8") as f:
                 json.dump(manga.to_dict(), f, indent=4)
         except Exception as e:
-            raise ValueError(f"Failed to save json file {MangaHelper.get_manga_json_path(manga.id)} {e}")
+            raise ValueError(f"Failed to save json file {PathHelper.get_manga_json_path(manga.id)} {e}")
 
     @staticmethod
     def load_manga_from_json(filename: str) -> MangaInfo | None:
@@ -90,7 +84,7 @@ class MangaHelper:
     def save_manga(manga: MangaInfo):
         try:
             FileHelper.create_folder(f"{Constants.general.DL_PATH}/{manga.id}")
-            cover_path = FileHelper.download_file(manga.cover_path, MangaHelper.get_manga_path(manga.id), manga.id)
+            cover_path = FileHelper.download_file(manga.cover_path, PathHelper.get_manga_path(manga.id), manga.id)
             cover_path = FileHelper.convert_webp_to_png(cover_path)
             manga.cover_path = "/".join(cover_path.split("/")[1:])
             MangaHelper.save_manga_to_json(manga)
@@ -100,12 +94,14 @@ class MangaHelper:
     @staticmethod
     def download_manga(manga: MangaInfo):
         for chapter in manga.chapters[::-1]:
-            chapter_path = f"{MangaHelper.get_manga_path(manga.id)}{chapter.number}"
+            chapter_path = f"{PathHelper.get_manga_path(manga.id)}{chapter.number}"
             if FileHelper.create_folder(chapter_path):
                 sys.stdout.write(f"\r\033[K* chapter {chapter.number} ...")
                 sys.stdout.flush()
                 try:
                     pages = ChapterHelper.get_chapter_pages_list(chapter.link)
+                    chapter_pages_info = ChapterPagesInfo(manga.id, chapter.number, chapter.link, pages)
+                    ChapterHelper.save_chapter_to_json(chapter_pages_info)
                     for index, page in enumerate(pages):
                         percent = math.floor((index + 1) * 100 / len(pages))
                         barIndex = math.floor(percent/10) 
@@ -114,5 +110,5 @@ class MangaHelper:
                         sys.stdout.write(f"\r\033[K* chapter {chapter.number} : [{bar}] {percent}%")
                         sys.stdout.flush()
                 except Exception as e:
-                    print(f"/!\\ Error when downloading {chapter.number} for {manga.id}. {e}\n")
+                    print(f"\n/!\\ Error when downloading {chapter.number} for {manga.id}. {e}\n")
                 

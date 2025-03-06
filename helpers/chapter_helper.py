@@ -1,3 +1,5 @@
+import json
+import os
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
@@ -6,7 +8,9 @@ from selenium.webdriver.support import expected_conditions as EC
 from bs4 import BeautifulSoup
 import requests
 from constants import Constants
+from entities.chapter_pages_info import ChapterPagesInfo
 from entities.manga_info import MangaInfo
+from helpers.path_helper import PathHelper
 
 class ChapterHelper:
     @staticmethod
@@ -63,3 +67,20 @@ class ChapterHelper:
             return image_links
         except Exception as e:
             raise e
+        
+    @staticmethod
+    def save_chapter_to_json(chapter_pages_info: ChapterPagesInfo):
+        path = PathHelper.get_chapter_json_path(chapter_pages_info.manga_id, chapter_pages_info.number)
+        try:
+            with open(path, "w", encoding="utf-8") as f:
+                json.dump(chapter_pages_info.to_dict(), f, indent=4)
+        except Exception as e:
+            raise ValueError(f"Failed to save json file {path} {e}")
+
+    @staticmethod
+    def load_chapter_from_json(filename: str) -> MangaInfo | None:
+        if not os.path.exists(filename):
+            return None
+        with open(filename, "r", encoding="utf-8") as f:
+            data = json.load(f)
+        return ChapterPagesInfo.from_dict(data)
