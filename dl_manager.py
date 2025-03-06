@@ -1,6 +1,7 @@
 import argparse
 import sys
 from constants import Constants
+from helpers.chapter_helper import ChapterHelper
 from helpers.file_helper import FileHelper
 from helpers.manga_helper import MangaHelper
 from helpers.path_helper import PathHelper
@@ -18,7 +19,12 @@ def check_manga(manga_id):
     print(f"# Checking {manga_id} ...")
     try:
         manga_info = MangaHelper.load_manga_from_json(PathHelper.get_manga_json_path(manga_id))
-        print(manga_info)
+        for chapter in manga_info.chapters[::-1]:
+            path = PathHelper.get_chapter_json_path(manga_id, chapter.number)
+            try:
+                ChapterHelper.load_chapter_from_json(path)
+            except Exception as e:
+                print(f"/!\\ Unable to load json file {path}")
     except Exception as e:
         print(e)
 
@@ -37,7 +43,7 @@ if __name__ == "__main__":
     args = parser.parse_args(sys.argv[1:])
     
     if args.dl is not None:
-        download_manga(args.dlmanga[0])
+        download_manga(args.dl[0])
         sys.exit()
     elif args.check is not None:
         check_manga(args.check[0])
