@@ -25,38 +25,41 @@ class ChapterHelper:
     
     @staticmethod
     def get_chapter_pages_list(link: str):
-        chapter_url = f"{Constants.general.WEBSITE}{link}"
-        
-        # Set up Selenium WebDriver
-        service = Service("/opt/homebrew/bin/chromedriver")  # Change this to your ChromeDriver path
-        options = webdriver.ChromeOptions()
-        options.add_argument("--headless")  # Run without opening a browser
-        driver = webdriver.Chrome(service=service, options=options)
-        
-        # Load the webpage
-        driver.get(chapter_url)
-        
-        # Wait for at least one <div data-name="image-item"> to appear
         try:
-            WebDriverWait(driver, 2).until(
-                EC.presence_of_element_located((By.XPATH, '//div[@data-name="image-item"]'))
-            )
-        except Exception as e:
-            print("Error waiting for elements:", e)
+            chapter_url = f"{Constants.general.WEBSITE}{link}"
+            
+            # Set up Selenium WebDriver
+            service = Service("/opt/homebrew/bin/chromedriver")  # Change this to your ChromeDriver path
+            options = webdriver.ChromeOptions()
+            options.add_argument("--headless")  # Run without opening a browser
+            driver = webdriver.Chrome(service=service, options=options)
+            
+            # Load the webpage
+            driver.get(chapter_url)
+            
+            # Wait for at least one <div data-name="image-item"> to appear
+            try:
+                WebDriverWait(driver, 2).until(
+                    EC.presence_of_element_located((By.XPATH, '//div[@data-name="image-item"]'))
+                )
+            except Exception as e:
+                raise ValueError(f"Error waiting for elements for {link}. {e}")
 
-        # Get the fully loaded page source
-        html = driver.page_source
-        soup = BeautifulSoup(html, "html.parser")
-        
-        # Close the browser
-        driver.quit()
-        
-        # Get image links
-        image_links = []
-        main_element = soup.select_one('main')
-        image_divs = main_element.find_all("div", {"data-name": "image-item"})
-        for image_div in image_divs:
-            image_link = image_div.select_one('img').get("src")
-            image_links.append(image_link)
-        
-        return image_links
+            # Get the fully loaded page source
+            html = driver.page_source
+            soup = BeautifulSoup(html, "html.parser")
+            
+            # Close the browser
+            driver.quit()
+            
+            # Get image links
+            image_links = []
+            main_element = soup.select_one('main')
+            image_divs = main_element.find_all("div", {"data-name": "image-item"})
+            for image_div in image_divs:
+                image_link = image_div.select_one('img').get("src")
+                image_links.append(image_link)
+            
+            return image_links
+        except Exception as e:
+            raise e

@@ -6,9 +6,12 @@ from helpers.manga_helper import MangaHelper
 
 def download_manga(manga_id):
     print(f"# Downloading {manga_id} ...")
-    manga_info = MangaHelper.get_manga_info(manga_id)
-    MangaHelper.save_manga(manga=manga_info)
-    MangaHelper.download_manga(manga=manga_info)
+    try:
+        manga_info = MangaHelper.get_manga_info(manga_id)
+        MangaHelper.save_manga(manga=manga_info)
+        MangaHelper.download_manga(manga=manga_info)
+    except Exception as e:
+        print(e)
 
 if __name__ == "__main__":
     # Definition of argument option
