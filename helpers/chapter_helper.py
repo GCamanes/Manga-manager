@@ -26,10 +26,11 @@ class ChapterHelper:
         filter_text = ChapterHelper.get_matching_link(link)
         chapter_parts = link.split(filter_text)[-1].split("-")
         chapter_parts[0] = str(chapter_parts[0]).zfill(4)
-        match = re.fullmatch(r"(\d{4})(\.(\d+|v\d+))?", ".".join(chapter_parts[:2]))
+        chapter_number = ".".join(chapter_parts[:2])
+        match = re.fullmatch(r"(\d{4})(\.(\d+|v\d+))?", chapter_number)
         if match:
-            return ".".join(chapter_parts[:2]) if match.group(2) else match.group(1)
-        return ".".join(chapter_parts)
+            return chapter_number if match.group(2) else match.group(1)
+        return chapter_number[:4] if chapter_number[:4].isdigit() else chapter_number
     
     @staticmethod
     def get_chapter_pages_list(link: str) -> list[str]:
