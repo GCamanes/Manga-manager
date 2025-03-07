@@ -14,7 +14,7 @@ class FirebaseHelper:
         # Get firestore client to interact with distant database
         self.store = firestore.client()
     
-    def __getStorageUrl(self):
+    def __getStorageUrl(self) -> str | None:
         storageUrl = None
         try:
             with open(Constants.firebase.service_account_key, "r") as fp:
@@ -24,7 +24,7 @@ class FirebaseHelper:
             pass
         return storageUrl
     
-    def __upload_file(self, local_path, storage_path):
+    def __upload_file(self, local_path: str, storage_path: str) -> None:
         # Create blob
         bucket = storage.bucket()
         blob = bucket.blob(storage_path)
@@ -36,7 +36,7 @@ class FirebaseHelper:
         blob.metadata = metadata
         blob.upload_from_filename(local_path)
     
-    def upload_manga(self, manga_id):
+    def upload_manga(self, manga_id: str) -> None:
         print(f"# Uploading {manga_id} ...")
         manga = MangaHelper.load_manga_from_json(MangaHelper.get_manga_json_path(manga_id))
         manga_ref = self.store.collection(Constants.firebase.mangas_collection).document(manga.id)

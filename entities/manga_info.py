@@ -17,7 +17,7 @@ class MangaInfo:
         return (f"#### Manga {self.title}\n* id={self.id}\n* cover={self.cover_path}\n* authors={self.authors}\n* genres={self.genres}\n"
                 f"* status={self.status}\n* chapters({len(self.chapters) if self.chapters != None else 0})")
 
-    def to_dict(self):
+    def to_dict(self) -> dict:
         return {
             "id": self.id,
             "title": self.title,
@@ -28,7 +28,7 @@ class MangaInfo:
             "chapters": [chapter.to_dict() for chapter in self.chapters]
         }
 
-    def to_dict_without_link(self):
+    def to_dict_without_link(self) -> dict:
         return {
             "id": self.id,
             "title": self.title,

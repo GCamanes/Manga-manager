@@ -9,7 +9,7 @@ class ChapterPagesInfo:
     def __repr__(self):
         return f"Chapter from manga {self.manga_id} (number={self.number}, url={self.link}, pages={len(self.page_links)})"
     
-    def to_dict(self):
+    def to_dict(self) -> dict:
         return {
             "manga_id": self.manga_id,
             "number": self.number,

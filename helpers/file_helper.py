@@ -14,7 +14,7 @@ class FileHelper:
 
     # Function to download a file from a URL
     @staticmethod
-    def download_file(url: str, destination_folder: str, new_name: str = None):
+    def download_file(url: str, destination_folder: str, new_name: str = None) -> str:
         try:
             file_name = os.path.basename(urlsplit(url).path)
             file_extension = os.path.splitext(file_name)[-1]
@@ -33,7 +33,7 @@ class FileHelper:
 
     # Function to convert a WEBP image to PNG with optional output filename
     @staticmethod
-    def convert_webp_to_png(input_path):   
+    def convert_webp_to_png(input_path) -> str:   
         if (not input_path.endswith(".webp")):
             return input_path
         try:

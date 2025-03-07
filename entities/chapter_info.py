@@ -7,7 +7,7 @@ class ChapterInfo:
     def __repr__(self):
         return f"Chapter(number={self.number}, url={self.link})"
     
-    def to_dict(self):
+    def to_dict(self) -> dict:
         return {
             "number": self.number,
             "link": self.link

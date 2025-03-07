@@ -14,21 +14,21 @@ from helpers.path_helper import PathHelper
 
 class ChapterHelper:
     @staticmethod
-    def get_matching_link(link: str):
+    def get_matching_link(link: str) -> str:
         for filter_text in Constants.chapter.FILTERS:
             if filter_text in link:
                 return filter_text
         return None
     
     @staticmethod
-    def extract_chap_number_from_link(link: str):
+    def extract_chap_number_from_link(link: str) -> str:
         filter_text = ChapterHelper.get_matching_link(link)
         chapter_parts = link.split(filter_text)[-1].split("-")
         chapter_parts[0] = str(chapter_parts[0]).zfill(4)
         return ".".join(chapter_parts[:2])
     
     @staticmethod
-    def get_chapter_pages_list(link: str):
+    def get_chapter_pages_list(link: str) -> list[str]:
         try:
             chapter_url = f"{Constants.general.WEBSITE}{link}"
             
@@ -69,7 +69,7 @@ class ChapterHelper:
             raise e
         
     @staticmethod
-    def save_chapter_to_json(chapter_pages_info: ChapterPagesInfo):
+    def save_chapter_to_json(chapter_pages_info: ChapterPagesInfo) -> None:
         path = PathHelper.get_chapter_json_path(chapter_pages_info.manga_id, chapter_pages_info.number)
         try:
             with open(path, "w", encoding="utf-8") as f:
@@ -78,10 +78,10 @@ class ChapterHelper:
             raise ValueError(f"Failed to save json file {path} {e}")
 
     @staticmethod
-    def load_chapter_from_json(filename: str) -> MangaInfo | None:
+    def load_chapter_from_json(filename: str) -> ChapterPagesInfo:
         try:
             if not os.path.exists(filename):
-                raise ValueError(f"Failed to load json file {filename} {e}")
+                raise ValueError(f"Failed to load json file {filename}")
             with open(filename, "r", encoding="utf-8") as f:
                 data = json.load(f)
             return ChapterPagesInfo.from_dict(data)

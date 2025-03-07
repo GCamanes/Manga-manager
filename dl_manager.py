@@ -1,4 +1,5 @@
 import argparse
+import os
 import sys
 from constants import Constants
 from helpers.chapter_helper import ChapterHelper
@@ -20,11 +21,21 @@ def check_manga(manga_id):
     try:
         manga_info = MangaHelper.load_manga_from_json(PathHelper.get_manga_json_path(manga_id))
         for chapter in manga_info.chapters[::-1]:
-            path = PathHelper.get_chapter_json_path(manga_id, chapter.number)
+            path = PathHelper.get_chapter_path(manga_id, chapter.number)
+            json_path = PathHelper.get_chapter_json_path(manga_id, chapter.number)
             try:
-                ChapterHelper.load_chapter_from_json(path)
+                chapter_pages_info = ChapterHelper.load_chapter_from_json(json_path)
+                # List all files that are not JSON files
+                files = [
+                    f for f in os.listdir(path)
+                    if os.path.isfile(os.path.join(path, f)) and not f.endswith(".json")
+                ]
+                if (len(files) != len(chapter_pages_info.page_links)):
+                    raise ValueError(f"missing pages")
+            except ValueError as ve:
+                print(f"/!\\ {manga_id} ({chapter.number}) : {ve}")
             except Exception as e:
-                print(f"/!\\ Unable to load json file {path}")
+                print(f"/!\\ {manga_id} ({chapter.number}) : Unable to load json file {json_path} {e}")
     except Exception as e:
         print(e)
 

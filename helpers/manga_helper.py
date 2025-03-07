@@ -15,7 +15,7 @@ from helpers.path_helper import PathHelper
 
 class MangaHelper:
     @staticmethod
-    def get_manga_info(manga_id):
+    def get_manga_info(manga_id: str) -> MangaInfo:
         try:
             manga_url = f"{Constants.general.BASE_TITLE_URL}{manga_id}"
             headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"}
@@ -65,7 +65,7 @@ class MangaHelper:
             raise ValueError(f"Failed to get {manga_id} info {e}")
 
     @staticmethod
-    def save_manga_to_json(manga: MangaInfo):
+    def save_manga_to_json(manga: MangaInfo) -> None:
         try:
             with open(PathHelper.get_manga_json_path(manga.id), "w", encoding="utf-8") as f:
                 json.dump(manga.to_dict(), f, indent=4)
@@ -76,7 +76,7 @@ class MangaHelper:
     def load_manga_from_json(filename: str) -> MangaInfo | None:
         try:
             if not os.path.exists(filename):
-                raise ValueError(f"Failed to load json file {filename} {e}")
+                raise ValueError(f"Failed to load json file {filename}")
             with open(filename, "r", encoding="utf-8") as f:
                 data = json.load(f)
             return MangaInfo.from_dict(data)
@@ -84,7 +84,7 @@ class MangaHelper:
             raise e
 
     @staticmethod
-    def save_manga(manga: MangaInfo):
+    def save_manga(manga: MangaInfo) -> None:
         try:
             FileHelper.create_folder(f"{Constants.general.DL_PATH}/{manga.id}")
             cover_path = FileHelper.download_file(manga.cover_path, PathHelper.get_manga_path(manga.id), manga.id)
@@ -95,7 +95,7 @@ class MangaHelper:
             raise e
 
     @staticmethod
-    def download_manga(manga: MangaInfo):
+    def download_manga(manga: MangaInfo) -> None:
         for chapter in manga.chapters[::-1]:
             chapter_path = f"{PathHelper.get_manga_path(manga.id)}{chapter.number}"
             if FileHelper.create_folder(chapter_path):
@@ -109,9 +109,12 @@ class MangaHelper:
                         percent = math.floor((index + 1) * 100 / len(pages))
                         barIndex = math.floor(percent/10) 
                         bar = "#" * barIndex + " " * (10 - barIndex)
-                        FileHelper.download_file(page, chapter_path, f"{index}".zfill(3))
-                        sys.stdout.write(f"\r\033[K* chapter {chapter.number} : [{bar}] {percent}%")
-                        sys.stdout.flush()
+                        try:
+                            FileHelper.download_file(page, chapter_path, f"{index}".zfill(3))
+                            sys.stdout.write(f"\r\033[K* chapter {chapter.number} : [{bar}] {percent}%")
+                            sys.stdout.flush()
+                        except Exception as dle:
+                            print(f"\n/!\\ Error when downloading {chapter.number} for {manga.id}. {dle}\n")  
                 except Exception as e:
                     print(f"\n/!\\ Error when downloading {chapter.number} for {manga.id}. {e}\n")
                 
