@@ -1,5 +1,6 @@
 import json
 import os
+import re
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
@@ -25,7 +26,10 @@ class ChapterHelper:
         filter_text = ChapterHelper.get_matching_link(link)
         chapter_parts = link.split(filter_text)[-1].split("-")
         chapter_parts[0] = str(chapter_parts[0]).zfill(4)
-        return ".".join(chapter_parts[:2])
+        match = re.fullmatch(r"(\d{4})(\.(\d+|v\d+))?", ".".join(chapter_parts[:2]))
+        if match:
+            return ".".join(chapter_parts[:2]) if match.group(2) else match.group(1)
+        return ".".join(chapter_parts)
     
     @staticmethod
     def get_chapter_pages_list(link: str) -> list[str]:
