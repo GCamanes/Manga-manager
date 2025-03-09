@@ -7,7 +7,7 @@ from helpers.file_helper import FileHelper
 from helpers.manga_helper import MangaHelper
 from helpers.path_helper import PathHelper
 
-def download_manga(manga_id):
+def download_manga(manga_id: str) -> None:
     print(f"# Downloading {manga_id} ...")
     try:
         manga_info = MangaHelper.get_manga_info(manga_id)
@@ -16,7 +16,12 @@ def download_manga(manga_id):
     except Exception as e:
         print(e)
         
-def check_manga(manga_id):
+def download_all_manga() -> None:
+    for manga in os.listdir(Constants.general.DL_PATH):
+        if os.path.isdir(os.path.join(Constants.general.DL_PATH, manga)):
+            download_manga(manga)
+        
+def check_manga(manga_id: str) -> None:
     print(f"# Checking {manga_id} ...")
     try:
         manga_info = MangaHelper.load_manga_from_json(PathHelper.get_manga_json_path(manga_id))
@@ -38,6 +43,11 @@ def check_manga(manga_id):
                 print(f"/!\\ {manga_id} ({chapter.number}) : Unable to load json file {json_path} {e}")
     except Exception as e:
         print(e)
+        
+def check_all_manga() -> None:
+    for manga in os.listdir(Constants.general.DL_PATH):
+        if os.path.isdir(os.path.join(Constants.general.DL_PATH, manga)):
+            check_manga(manga)
 
 if __name__ == "__main__":
     # Definition of argument option
@@ -45,9 +55,15 @@ if __name__ == "__main__":
     parser.add_argument('--dl', nargs=1,
                     help='download manga (use manga id as parameter)',
                     action='store', type=str)
-    parser.add_argument('--check', nargs=1,
+    parser.add_argument('--dlall',
+                    help='download all already known manga',
+                    action="store_true")
+    parser.add_argument('-c', '--check', nargs=1,
                     help='check manga files (use manga id as parameter)',
                     action='store', type=str)
+    parser.add_argument('--checkall',
+                    help='chack all manga integrity',
+                    action="store_true")
     
     
     # Parsing of command line argument
@@ -56,8 +72,14 @@ if __name__ == "__main__":
     if args.dl is not None:
         download_manga(args.dl[0])
         sys.exit()
+    elif args.dlall is not None:
+        download_all_manga()
+        sys.exit()
     elif args.check is not None:
         check_manga(args.check[0])
+        sys.exit()
+    elif args.checkall is not None:
+        check_all_manga()
         sys.exit()
 
     
