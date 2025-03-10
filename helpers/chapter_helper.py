@@ -23,7 +23,7 @@ class ChapterHelper:
     
     @staticmethod
     def extract_chap_number_from_link(link: str) -> str:
-        filter_text = ChapterHelper.get_matching_link(link)
+        filter_text = ChapterHelper.get_matching_link(link.split("/")[-1])
         chapter_parts = link.split(filter_text)[-1].split("-")
         chapter_parts[0] = str(chapter_parts[0]).zfill(4)
         chapter_number = ".".join(chapter_parts[:2])

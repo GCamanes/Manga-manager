@@ -72,13 +72,13 @@ if __name__ == "__main__":
     if args.dl is not None:
         download_manga(args.dl[0])
         sys.exit()
-    elif args.dlall is not None:
+    elif args.dlall:
         download_all_manga()
         sys.exit()
     elif args.check is not None:
         check_manga(args.check[0])
         sys.exit()
-    elif args.checkall is not None:
+    elif args.checkall:
         check_all_manga()
         sys.exit()
 
