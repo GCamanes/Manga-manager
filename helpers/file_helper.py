@@ -59,12 +59,15 @@ class FileHelper:
         
         
     # Function to read or create the JSON file with a customizable converter
-    def load_json_file(filepath, converter):
+    def load_json_file(filepath, converter, allow_missing: bool = False):
         if os.path.exists(filepath):
             with open(filepath, "r", encoding="utf-8") as file:
                 try:
                     data = json.load(file)
                     return converter(data)
                 except Exception as e:
-                    raise ValueError(f"Failed to load json file {filepath} {e}")
+                    raise ValueError(f"Failed to read json file when loading {filepath} {e}")
+        if not allow_missing:
+            raise ValueError(f"Failed to load json file {filepath}")
+
         return converter({})

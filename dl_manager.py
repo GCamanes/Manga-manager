@@ -9,15 +9,15 @@ from helpers.manga_helper import MangaHelper
 from helpers.path_helper import PathHelper
 
 def get_manga_ids() -> MangaList:
-    return FileHelper.load_json_file(Constants.general.MANGA_IDS_JSON, MangaList.from_json)
+    return FileHelper.load_json_file(Constants.general.MANGA_IDS_JSON, MangaList.from_dict, allow_missing=True)
 
 def download_manga(manga_id: str, need_to_add: bool = False) -> None:
     print(f"# Downloading {manga_id} ...")
     if need_to_add:
-        manga_list = FileHelper.load_json_file(Constants.general.MANGA_IDS_JSON, MangaList.from_json)
+        manga_list = FileHelper.load_json_file(Constants.general.MANGA_IDS_JSON, MangaList.from_dict)
         if manga_list.add_manga(manga_id):
             print(f'Added: {manga_id}')
-            FileHelper.save_json_file(Constants.general.MANGA_IDS_JSON, manga_list.to_json())
+            FileHelper.save_json_file(Constants.general.MANGA_IDS_JSON, manga_list.to_dict())
         else:
             print(f'ID "{manga_id}" already exists.')
     try:
@@ -29,7 +29,7 @@ def download_manga(manga_id: str, need_to_add: bool = False) -> None:
         
 def download_all_manga() -> None:
     manga_list = get_manga_ids()
-    FileHelper.save_json_file(Constants.general.MANGA_IDS_JSON, manga_list.to_json())
+    FileHelper.save_json_file(Constants.general.MANGA_IDS_JSON, manga_list.to_dict())
     for manga in manga_list.ids:
         download_manga(manga, False)
         

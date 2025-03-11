@@ -5,13 +5,13 @@ class MangaList:
     def __repr__(self):
         return f"MangaList(ids={self.ids})"
     
-    def to_json(self) -> dict:
+    def to_dict(self) -> dict:
         return {
             "ids": self.ids,
         }
 
     @classmethod
-    def from_json(cls, data):
+    def from_dict(cls, data):
         if not isinstance(data, dict) or "ids" not in data or not isinstance(data["ids"], list):
             return cls([])
         return cls([str(id) for id in data["ids"]])

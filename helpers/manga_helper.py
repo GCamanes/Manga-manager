@@ -1,6 +1,4 @@
-import json
 import math
-import os
 import re
 import sys
 from bs4 import BeautifulSoup
@@ -56,9 +54,6 @@ class MangaHelper:
                 if ChapterHelper.get_matching_link(link.get("href")) != None
             ]
             chapters = [ChapterInfo(ChapterHelper.extract_chap_number_from_link(link.get("href")), link.get("href")) for link in filtered_links]
-                
-            #pictureName = download_file(image_url, "./")
-            #convert_webp_to_png(pictureName)
             
             return MangaInfo(manga_id, title, cover_path, authors, genres, status, chapters)
         except Exception as e:
@@ -66,22 +61,11 @@ class MangaHelper:
 
     @staticmethod
     def save_manga_to_json(manga: MangaInfo) -> None:
-        try:
-            with open(PathHelper.get_manga_json_path(manga.id), "w", encoding="utf-8") as f:
-                json.dump(manga.to_dict(), f, indent=4)
-        except Exception as e:
-            raise ValueError(f"Failed to save json file {PathHelper.get_manga_json_path(manga.id)} {e}")
+        FileHelper.save_json_file(PathHelper.get_manga_json_path(manga.id), manga.to_dict())
 
     @staticmethod
-    def load_manga_from_json(filename: str) -> MangaInfo | None:
-        try:
-            if not os.path.exists(filename):
-                raise ValueError(f"Failed to load json file {filename}")
-            with open(filename, "r", encoding="utf-8") as f:
-                data = json.load(f)
-            return MangaInfo.from_dict(data)
-        except Exception as e:
-            raise e
+    def load_manga_from_json(filepath: str) -> MangaInfo | None:
+        return FileHelper.load_json_file(filepath, MangaInfo.from_dict)
 
     @staticmethod
     def save_manga(manga: MangaInfo) -> None:
