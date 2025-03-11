@@ -2,24 +2,36 @@ import argparse
 import os
 import sys
 from constants import Constants
+from entities.manga_list import MangaList
 from helpers.chapter_helper import ChapterHelper
 from helpers.file_helper import FileHelper
 from helpers.manga_helper import MangaHelper
 from helpers.path_helper import PathHelper
 
-def download_manga(manga_id: str) -> None:
+def get_manga_ids() -> MangaList:
+    return FileHelper.load_json_file(Constants.general.MANGA_IDS_JSON, MangaList.from_json)
+
+def download_manga(manga_id: str, need_to_add: bool = False) -> None:
     print(f"# Downloading {manga_id} ...")
+    if need_to_add:
+        manga_list = FileHelper.load_json_file(Constants.general.MANGA_IDS_JSON, MangaList.from_json)
+        if manga_list.add_manga(manga_id):
+            print(f'Added: {manga_id}')
+            FileHelper.save_json_file(Constants.general.MANGA_IDS_JSON, manga_list.to_json())
+        else:
+            print(f'ID "{manga_id}" already exists.')
     try:
         manga_info = MangaHelper.get_manga_info(manga_id)
         MangaHelper.save_manga(manga=manga_info)
-        MangaHelper.download_manga(manga=manga_info)
+        #MangaHelper.download_manga(manga=manga_info)
     except Exception as e:
         print(e)
         
 def download_all_manga() -> None:
-    for manga in os.listdir(Constants.general.DL_PATH):
-        if os.path.isdir(os.path.join(Constants.general.DL_PATH, manga)):
-            download_manga(manga)
+    manga_list = get_manga_ids()
+    FileHelper.save_json_file(Constants.general.MANGA_IDS_JSON, manga_list.to_json())
+    for manga in manga_list.ids:
+        download_manga(manga, False)
         
 def check_manga(manga_id: str) -> None:
     print(f"# Checking {manga_id} ...")
@@ -50,7 +62,6 @@ def check_all_manga() -> None:
             check_manga(manga)
 
 if __name__ == "__main__":
-    # Definition of argument option
     parser = argparse.ArgumentParser(prog="dl_manager.py")
     parser.add_argument('--dl', nargs=1,
                     help='download manga (use manga id as parameter)',
@@ -64,13 +75,11 @@ if __name__ == "__main__":
     parser.add_argument('--checkall',
                     help='chack all manga integrity',
                     action="store_true")
-    
-    
-    # Parsing of command line argument
+
     args = parser.parse_args(sys.argv[1:])
     
     if args.dl is not None:
-        download_manga(args.dl[0])
+        download_manga(args.dl[0], True)
         sys.exit()
     elif args.dlall:
         download_all_manga()

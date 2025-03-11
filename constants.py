@@ -3,10 +3,11 @@
 
 class Constants:
     class general:
-        WEBSITE = f"https://mangapark.io"
-        TITLE_PATH = f"title"
+        WEBSITE = "https://mangapark.io"
+        TITLE_PATH = "title"
         BASE_TITLE_URL = f"{WEBSITE}/{TITLE_PATH}/"
         DL_PATH = ".manga"
+        MANGA_IDS_JSON = "manga_list.json"
         
     class firebase:
         service_account_key = "ServiceAccountKey.json"

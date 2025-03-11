@@ -17,5 +17,6 @@ Download the service account key under ServiceAccountKey.json file and place it 
 
 ## Run script 
 
-python3 dl_manager.py --dlmanga mangaID
-
+python3 dl_manager.py --dl mangaID
+python3 dl_manager.py --dlall
+python3 dl_manager.py --checkall

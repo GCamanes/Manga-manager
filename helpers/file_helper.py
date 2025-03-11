@@ -1,3 +1,4 @@
+import json
 import os
 import requests
 from urllib.parse import urlsplit
@@ -47,3 +48,23 @@ class FileHelper:
         except Exception as e:
             raise ValueError(f"Failed to convert image {input_path} {e}")
 
+    # Function to save data back to the JSON file
+    @staticmethod
+    def save_json_file(filepath: str, data: dict) -> None:
+        try:
+            with open(filepath, "w", encoding="utf-8") as file:
+                json.dump(data, file, indent=4)
+        except Exception as e:
+            raise ValueError(f"Failed to save json file {filepath} {e}")
+        
+        
+    # Function to read or create the JSON file with a customizable converter
+    def load_json_file(filepath, converter):
+        if os.path.exists(filepath):
+            with open(filepath, "r", encoding="utf-8") as file:
+                try:
+                    data = json.load(file)
+                    return converter(data)
+                except Exception as e:
+                    raise ValueError(f"Failed to load json file {filepath} {e}")
+        return converter({})
