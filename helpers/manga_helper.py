@@ -48,12 +48,7 @@ class MangaHelper:
             chapter_list_div = soup.find('div', attrs={'data-name': 'chapter-list'})
             ## Find all <a> tags that match the manga pattern
             matching_links = chapter_list_div.find_all('a', href=re.compile(rf"^/title/{re.escape(manga_id)}/.*"))
-            ## Filter links containing "ch." or "chapter-" in lower case
-            filtered_links = [
-                link for link in matching_links
-                if ChapterHelper.get_matching_link(link.get("href")) != None
-            ]
-            chapters = [ChapterInfo(ChapterHelper.extract_chap_number_from_link(link.get("href")), link.get("href")) for link in filtered_links]
+            chapters = [ChapterInfo(ChapterHelper.extract_chap_number_from_link(link.get("href")), link.get("href")) for link in matching_links]
             
             return MangaInfo(manga_id, title, cover_path, authors, genres, status, chapters)
         except Exception as e:
