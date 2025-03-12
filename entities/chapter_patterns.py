@@ -20,9 +20,11 @@ class ChapterPatterns:
         normalized = re.sub(r'\d', '#', candidate)
         match = re.search(r"(.*[\d#])[^#\d]*$", normalized)
         pattern = match.group(1) if match else normalized
-        if pattern == "#######-######-g#" or pattern == "#######-page-###" \
+        if pattern == "#######-######-g#"\
+            or pattern == "#######-page-###" \
             or pattern == "#######-the-origin-of-obedience-part-#"\
             or pattern == "#######-chapter-###-v#-#-##"\
-            or pattern == "#######-vol-##-ch-###-#-ch-##-##":
+            or pattern == "#######-vol-##-ch-###-#-ch-##-##"\
+            or pattern == "#######-chapter-#v#":
             print(candidate)
         self.patterns.add(pattern)

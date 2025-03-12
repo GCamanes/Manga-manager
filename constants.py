@@ -16,3 +16,4 @@ class Constants:
         
     class chapter:
         FILTERS = ["ch-", "chapter-"]
+        CLASSIC_REGEXP = r'.*(-ch-|-chapter-|-punch-)(\d+)(?:-?v?(\d+))?.*$'

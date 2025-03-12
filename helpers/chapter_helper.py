@@ -11,23 +11,20 @@ from helpers.file_helper import FileHelper
 from helpers.path_helper import PathHelper
 
 class ChapterHelper:
-    @staticmethod
-    def get_matching_link(link: str) -> str:
-        for filter_text in Constants.chapter.FILTERS:
-            if filter_text in link:
-                return filter_text
-        return None
     
     @staticmethod
     def extract_chap_number_from_link(link: str) -> str:
-        filter_text = ChapterHelper.get_matching_link(link.split("/")[-1])
-        chapter_parts = link.split(filter_text)[-1].split("-")
-        chapter_parts[0] = str(chapter_parts[0]).zfill(4)
-        chapter_number = ".".join(chapter_parts[:2])
-        match = re.fullmatch(r"(\d{4})(\.(\d+|v\d+))?", chapter_number)
+        # Removing useless parts of the link
+        chapter_part = link.split("/")[-1]
+        # Removing chapter id
+        chapter_part = re.sub(r'^\d+', '', chapter_part)
+        match = re.fullmatch(Constants.chapter.CLASSIC_REGEXP, chapter_part)
         if match:
-            return chapter_number if match.group(2) else match.group(1)
-        return chapter_number[:4] if chapter_number[:4].isdigit() else chapter_number
+            first_digits = match.group(2)
+            last_digits = match.group(3) if match.group(3) else None
+            return f"{first_digits.zfill(4)}.{last_digits.zfill(2)}" if last_digits is not None else first_digits.zfill(4)
+        
+        return chapter_part
     
     @staticmethod
     def get_chapter_pages_list(link: str) -> list[str]:
