@@ -2,6 +2,7 @@ import argparse
 import os
 import sys
 from constants import Constants
+from entities.chapter_patterns import ChapterPatterns
 from entities.manga_list import MangaList
 from helpers.chapter_helper import ChapterHelper
 from helpers.file_helper import FileHelper
@@ -23,6 +24,12 @@ def download_manga(manga_id: str, need_to_add: bool = False) -> None:
     try:
         manga_info = MangaHelper.get_manga_info(manga_id)
         MangaHelper.save_manga(manga=manga_info)
+        # Retrieve all pattern of chapters
+        chapter_patterns = FileHelper.load_json_file(Constants.general.CHAPTER_PATTERNS_JSON, ChapterPatterns.from_dict, allow_missing=True)
+        for chapter in manga_info.chapters:
+            chapter_patterns.add_pattern(chapter.link.split("/")[-1])
+        # Saving chapter patterns
+        FileHelper.save_json_file(Constants.general.CHAPTER_PATTERNS_JSON, chapter_patterns.to_dict())
         #MangaHelper.download_manga(manga=manga_info)
     except Exception as e:
         print(e)

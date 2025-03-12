@@ -8,6 +8,7 @@ class Constants:
         BASE_TITLE_URL = f"{WEBSITE}/{TITLE_PATH}/"
         DL_PATH = ".manga"
         MANGA_IDS_JSON = "manga_list.json"
+        CHAPTER_PATTERNS_JSON = "chapter_patterns.json"
         
     class firebase:
         service_account_key = "ServiceAccountKey.json"
