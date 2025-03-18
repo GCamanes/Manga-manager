@@ -9,6 +9,7 @@ class Constants:
         DL_PATH = ".manga"
         MANGA_IDS_JSON = "manga_list.json"
         CHAPTER_PATTERNS_JSON = "chapter_patterns.json"
+        CHAPTER_CUSTOMS_JSON = "chapter_customs.json"
         
     class firebase:
         service_account_key = "ServiceAccountKey.json"
@@ -17,3 +18,4 @@ class Constants:
     class chapter:
         FILTERS = ["ch-", "chapter-"]
         CLASSIC_REGEXP = r'.*(-ch-|-chapter-|-punch-)(\d+)(?:-?v?(\d+))?.*$'
+        CUSTOM_REGEXP = r'(\d+)(?:-?v?(\d+))?.*$'

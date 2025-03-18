@@ -4,6 +4,7 @@ import sys
 from bs4 import BeautifulSoup
 import requests
 from constants import Constants
+from entities.chapter_customs import ChapterCustoms
 from entities.chapter_info import ChapterInfo
 from entities.chapter_pages_info import ChapterPagesInfo
 from entities.manga_info import MangaInfo
@@ -19,7 +20,7 @@ class MangaHelper:
             headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"}
             response = requests.get(manga_url, headers=headers)
             if response.status_code != 200:
-                raise ValueError(f"Error: Failed to retrieve page for {manga_id}, status code {response.status_code}")
+                raise ValueError(f"Error: Failed to retrieve info for {manga_id}, status code {response.status_code}")
             soup = BeautifulSoup(response.text, "html.parser")
             
             # get main div
@@ -48,7 +49,11 @@ class MangaHelper:
             chapter_list_div = soup.find('div', attrs={'data-name': 'chapter-list'})
             ## Find all <a> tags that match the manga pattern
             matching_links = chapter_list_div.find_all('a', href=re.compile(rf"^/title/{re.escape(manga_id)}/.*"))
-            chapters = [ChapterInfo(ChapterHelper.extract_chap_number_from_link(link.get("href")), link.get("href")) for link in matching_links]
+            chapter_customs = FileHelper.load_json_file(Constants.general.CHAPTER_CUSTOMS_JSON, ChapterCustoms, allow_missing=True)
+            chapters = [
+                ChapterInfo(ChapterHelper.extract_chap_number_from_link(link.get("href"), customs=chapter_customs.get_entry(manga_id)), link.get("href"))
+                for link in matching_links
+            ]
             
             return MangaInfo(manga_id, title, cover_path, authors, genres, status, chapters)
         except Exception as e:

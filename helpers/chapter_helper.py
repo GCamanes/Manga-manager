@@ -6,6 +6,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from bs4 import BeautifulSoup
 from constants import Constants
+from entities.chapter_customs import ChapterCustomsEntry
 from entities.chapter_pages_info import ChapterPagesInfo
 from helpers.file_helper import FileHelper
 from helpers.path_helper import PathHelper
@@ -13,11 +14,11 @@ from helpers.path_helper import PathHelper
 class ChapterHelper:
     
     @staticmethod
-    def extract_chap_number_from_link(link: str) -> str:
+    def extract_chap_number_from_link(link: str, customs: ChapterCustomsEntry = None) -> str:
         # Removing useless parts of the link
-        chapter_part = link.split("/")[-1]
-        # Removing chapter id
-        chapter_part = re.sub(r'^\d+', '', chapter_part)
+        chapter_part = link.split("/")[-1]        
+        # Applyng custom or removing chapter id
+        chapter_part = customs.get_entry(chapter_part) or re.sub(r'^\d+', '', chapter_part)
         match = re.fullmatch(Constants.chapter.CLASSIC_REGEXP, chapter_part)
         if match:
             first_digits = match.group(2)
