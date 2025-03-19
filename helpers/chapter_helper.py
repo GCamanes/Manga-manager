@@ -18,7 +18,7 @@ class ChapterHelper:
         # Removing useless parts of the link
         chapter_part = link.split("/")[-1]        
         # Applyng custom or removing chapter id
-        chapter_part = customs.get_entry(chapter_part) or re.sub(r'^\d+', '', chapter_part)
+        chapter_part = (customs.get_entry(chapter_part) if customs else None) or re.sub(r'^\d+', '', chapter_part)
         match = re.fullmatch(Constants.chapter.CLASSIC_REGEXP, chapter_part)
         if match:
             first_digits = match.group(2)
