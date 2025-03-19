@@ -20,9 +20,14 @@ class ChapterHelper:
         # Applyng custom or removing chapter id
         chapter_part = (customs.get_entry(chapter_part) if customs else None) or re.sub(r'^\d+', '', chapter_part)
         match = re.fullmatch(Constants.chapter.CLASSIC_REGEXP, chapter_part)
+        match_customs = re.fullmatch(Constants.chapter.CUSTOM_REGEXP, chapter_part)
         if match:
             first_digits = match.group(2)
             last_digits = match.group(3) if match.group(3) else None
+            return f"{first_digits.zfill(4)}.{last_digits.zfill(2)}" if last_digits is not None else first_digits.zfill(4)
+        elif match_customs:
+            first_digits = match_customs.group(1)
+            last_digits = match_customs.group(2) if match_customs.group(2) else None
             return f"{first_digits.zfill(4)}.{last_digits.zfill(2)}" if last_digits is not None else first_digits.zfill(4)
         
         return chapter_part
