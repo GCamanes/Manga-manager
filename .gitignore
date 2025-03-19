@@ -5,5 +5,4 @@
 .DS_Store
 .manga/
 ServiceAccountKey.json
-manga_list.json
 chapter_patterns.json
