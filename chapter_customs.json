@@ -1,6 +1,48 @@
 {
+    "10660-en-my-hero-academia": {
+        "black_list": [
+            "1399092-vol-10"
+        ],
+        "chapter_fix": {}
+    },
+    "11462-en-mobile-suit-gundam-the-origin": {
+        "black_list": [
+            "1380380-vol-1"
+        ],
+        "chapter_fix": {
+            "7650658-bonus-track-iii": "109-3",
+            "7650657-bonus-track-ii": "109-2",
+            "7650655-bonus-track-i": "109-1"
+        }
+    },
+    "11643-en-attack-on-titan": {
+        "black_list": [
+            "3319995-vol-01-ch-001-5-first-draft-storyboard-for-chapter-1"
+        ],
+        "chapter_fix": {}
+    },
+    "12502-en-gantz": {
+        "black_list": [
+            "1402291-vol-1"
+        ],
+        "chapter_fix": {}
+    },
+    "14762-en-overlord": {
+        "black_list": [
+            "1402291-vol-1"
+        ],
+        "chapter_fix": {}
+    },
+    "15427-en-tokyo-ghoul": {
+        "black_list": [
+            "1333397-vol-1"
+        ],
+        "chapter_fix": {}
+    },
     "29262-en-black-clover": {
-        "black_list": [],
+        "black_list": [
+            "1385451-vol-1"
+        ],
         "chapter_fix": {
             "2675719-423682-g7": "297"
         }
@@ -25,7 +67,40 @@
             "10534-vol-01-ch-002",
             "10533-vol-01-ch-001"
         ],
-        "chapter_fix": {}
+        "chapter_fix": {
+            "6584579-vol-06-chapter-6": "6-6",
+            "6584609-vol-06-chapter-5": "6-5",
+            "6584686-vol-06-chapter-4": "6-4",
+            "6584635-vol-06-chapter-3": "6-3",
+            "6584722-vol-06-chapter-2": "6-2",
+            "6584747-vol-06-chapter-1": "6-1",
+            "10557-vol-05-ch-006": "5-6",
+            "6584757-vol-05-chapter-6": "5-6",
+            "6584767-vol-05-chapter-5": "5-5",
+            "6584858-vol-05-chapter-4": "5-4",
+            "6585082-vol-05-chapter-3": "5-3",
+            "3918264-vol-05-chapter-2": "5-2",
+            "3918263-vol-05-chapter-1": "5-1",
+            "3918262-vol-04-chapter-5": "4-5",
+            "3918261-vol-04-chapter-4": "4-4",
+            "3918260-vol-04-chapter-3": "4-3",
+            "3918259-vol-04-chapter-2": "4-2",
+            "3918258-vol-04-chapter-1": "4-1",
+            "3918257-vol-03-chapter-4": "3-4",
+            "3918256-vol-03-chapter-3": "3-3",
+            "3918255-vol-03-chapter-2": "3-2",
+            "3918254-vol-03-chapter-1": "3-1",
+            "3918253-vol-02-chapter-5": "2-5",
+            "3918252-vol-02-chapter-4": "2-4",
+            "3918251-vol-02-chapter-3": "2-3",
+            "3918249-vol-02-chapter-2": "2-2",
+            "3918248-vol-02-chapter-1": "2-1",
+            "3918247-vol-01-chapter-5": "1-5",
+            "3918246-vol-01-chapter-4": "1-4",
+            "3918245-vol-01-chapter-3": "1-3",
+            "3918250-vol-01-chapter-2": "1-2",
+            "3918244-vol-01-chapter-1": "1-1"
+        }
     },
     "10749-en-one-punch-man": {
         "black_list": [
@@ -80,5 +155,17 @@
             "1351538-volume-2-bonus-manga": "15-1",
             "1351530-volume-1-bonus-manga": "8-1"
         }
+    },
+    "30373-en-all-you-need-is-kill": {
+        "black_list": [
+            "1390627-vol-1"
+        ],
+        "chapter_fix": {}
+    },
+    "40454-en-tokyo-ghoul-re": {
+        "black_list": [
+            "1333582-vol-3"
+        ],
+        "chapter_fix": {}
     }
 }
