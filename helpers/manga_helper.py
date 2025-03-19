@@ -50,9 +50,12 @@ class MangaHelper:
             ## Find all <a> tags that match the manga pattern
             matching_links = chapter_list_div.find_all('a', href=re.compile(rf"^/title/{re.escape(manga_id)}/.*"))
             chapter_customs = FileHelper.load_json_file(Constants.general.CHAPTER_CUSTOMS_JSON, ChapterCustoms, allow_missing=True)
+            custom_entry = chapter_customs.get_entry(manga_id)
+            black_list = custom_entry.black_list if custom_entry else []
             chapters = [
-                ChapterInfo(ChapterHelper.extract_chap_number_from_link(link.get("href"), customs=chapter_customs.get_entry(manga_id)), link.get("href"))
+                ChapterInfo(ChapterHelper.extract_chap_number_from_link(link.get("href"), customs=custom_entry), link.get("href"))
                 for link in matching_links
+                if not any(black_listed in link.get("href") for black_listed in black_list)
             ]
             
             return MangaInfo(manga_id, title, cover_path, authors, genres, status, chapters)

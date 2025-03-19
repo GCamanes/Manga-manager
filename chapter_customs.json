@@ -17,6 +17,31 @@
         ],
         "chapter_fix": {}
     },
+    "10723-en-akira": {
+        "black_list": [
+            {
+                "number": "0005",
+                "link": "/title/10723-en-akira/10537-vol-01-ch-005"
+            },
+            {
+                "number": "0004",
+                "link": "/title/10723-en-akira/10536-vol-01-ch-004"
+            },
+            {
+                "number": "0003",
+                "link": "/title/10723-en-akira/10535-vol-01-ch-003"
+            },
+            {
+                "number": "0002",
+                "link": "/title/10723-en-akira/10534-vol-01-ch-002"
+            },
+            {
+                "number": "0001",
+                "link": "/title/10723-en-akira/10533-vol-01-ch-001"
+            }
+        ],
+        "chapter_fix": {}
+    },
     "10749-en-one-punch-man": {
         "black_list": [
             "7805744-vol-23-chapter-155-results",
