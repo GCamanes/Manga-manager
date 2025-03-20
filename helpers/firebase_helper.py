@@ -4,6 +4,7 @@ import firebase_admin
 from firebase_admin import credentials, firestore, storage
 
 from constants import Constants
+from entities.manga_info_doc import MangaInfoDoc
 from helpers.manga_helper import MangaHelper
 from helpers.path_helper import PathHelper
 
@@ -25,6 +26,17 @@ class FirebaseHelper:
             pass
         return storageUrl
     
+    # Function to get a document by ID
+    def get_manga_by_id(self, manga_id):
+        doc_ref = self.store.collection(Constants.firebase.mangas_collection).document(manga_id)  # Reference to the document
+        doc = doc_ref.get()  # Fetch the document
+        
+        if doc.exists:
+            return MangaInfoDoc.from_dict(doc.to_dict())
+        else:
+            print("No such document found!")
+            return None
+    
     def __upload_file(self, local_path: str, storage_path: str) -> None:
         # Create blob
         bucket = storage.bucket()
@@ -39,6 +51,8 @@ class FirebaseHelper:
     
     def upload_manga(self, manga_id: str) -> None:
         print(f"# Uploading {manga_id} ...")
+        manga_previous = self.get_manga_by_id(manga_id)
+        print(manga_previous)
         manga = MangaHelper.load_manga_from_json(PathHelper.get_manga_json_path(manga_id))
         manga_ref = self.store.collection(Constants.firebase.mangas_collection).document(manga.id)
         manga_ref.set(manga.to_dict_without_link())

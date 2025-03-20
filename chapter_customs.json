@@ -199,5 +199,11 @@
             "1333582-vol-3"
         ],
         "chapter_fix": {}
+    },
+    "74763-en-chainsaw-man": {
+        "black_list": [
+            "9491923-chapter-192"
+        ],
+        "chapter_fix": {}
     }
 }
