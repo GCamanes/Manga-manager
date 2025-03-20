@@ -5,6 +5,7 @@ from firebase_admin import credentials, firestore, storage
 
 from constants import Constants
 from helpers.manga_helper import MangaHelper
+from helpers.path_helper import PathHelper
 
 class FirebaseHelper:
     def __init__(self):
@@ -38,7 +39,7 @@ class FirebaseHelper:
     
     def upload_manga(self, manga_id: str) -> None:
         print(f"# Uploading {manga_id} ...")
-        manga = MangaHelper.load_manga_from_json(MangaHelper.get_manga_json_path(manga_id))
+        manga = MangaHelper.load_manga_from_json(PathHelper.get_manga_json_path(manga_id))
         manga_ref = self.store.collection(Constants.firebase.mangas_collection).document(manga.id)
         manga_ref.set(manga.to_dict_without_link())
         self.__upload_file(f"{Constants.general.DL_PATH}/{manga.cover_path}", manga.cover_path)

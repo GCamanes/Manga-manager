@@ -1,9 +1,5 @@
 import argparse
-import json
 import sys
-from constants import Constants
-import firebase_admin
-from firebase_admin import credentials, firestore, storage
 
 from helpers.firebase_helper import FirebaseHelper
 
