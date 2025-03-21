@@ -1,5 +1,7 @@
 import json
+import math
 import os
+import sys
 from uuid import uuid4
 import firebase_admin
 from firebase_admin import credentials, firestore, storage
@@ -36,7 +38,6 @@ class FirebaseHelper:
         if doc.exists:
             return MangaDoc.from_dict(doc.to_dict())
         else:
-            print("No such document found!")
             return None
         
         # Function to delete a manga by ID
@@ -102,10 +103,22 @@ class FirebaseHelper:
         # Upload each chapter and update manga doc accordingly
         for chapter_doc in chapter_docs:
             if chapter_doc.number not in manga_doc.chapters:
-                chapter_ref = self.store.collection(Constants.firebase.mangas_collection).document(manga_doc.id)\
-                    .collection(Constants.firebase.chapters_collection).document(chapter_doc.number)
-                chapter_ref.set(chapter_doc.to_dict())
-                manga_doc.chapters.append(chapter_doc.number)
-                manga_ref = self.store.collection(Constants.firebase.mangas_collection).document(manga_doc.id)
-                manga_ref.set(manga_doc.to_dict())
-    
+                try:
+                    sys.stdout.write(f"\r\033[K* chapter {chapter_doc.number} ...")
+                    sys.stdout.flush()
+                    for index, page in enumerate(chapter_doc.pages):
+                        percent = math.floor((index + 1) * 100 / len(chapter_doc.pages))
+                        barIndex = math.floor(percent/10) 
+                        bar = "#" * barIndex + " " * (10 - barIndex)
+                        self.__upload_file(f"{Constants.general.DL_PATH}/{page}", page)
+                        sys.stdout.write(f"\r\033[K* chapter {chapter_doc.number} : [{bar}] {percent}%")
+                        sys.stdout.flush()
+                    chapter_ref = self.store.collection(Constants.firebase.mangas_collection).document(manga_doc.id)\
+                        .collection(Constants.firebase.chapters_collection).document(chapter_doc.number)
+                    chapter_ref.set(chapter_doc.to_dict())
+                    manga_doc.chapters.append(chapter_doc.number)
+                    manga_ref = self.store.collection(Constants.firebase.mangas_collection).document(manga_doc.id)
+                    manga_ref.set(manga_doc.to_dict())
+                except Exception as e:
+                    print(f"/!\\ ERROR while uplaoding {manga_id} {chapter_doc.number} : {e}")
+                    sys.exit(1)
