@@ -4,7 +4,7 @@ import firebase_admin
 from firebase_admin import credentials, firestore, storage
 
 from constants import Constants
-from entities.manga_info_doc import MangaInfoDoc
+from entities.manga_info_doc import MangaDoc
 from helpers.manga_helper import MangaHelper
 from helpers.path_helper import PathHelper
 
@@ -32,7 +32,7 @@ class FirebaseHelper:
         doc = doc_ref.get()  # Fetch the document
         
         if doc.exists:
-            return MangaInfoDoc.from_dict(doc.to_dict())
+            return MangaDoc.from_dict(doc.to_dict())
         else:
             print("No such document found!")
             return None
@@ -51,9 +51,11 @@ class FirebaseHelper:
     
     def upload_manga(self, manga_id: str) -> None:
         print(f"# Uploading {manga_id} ...")
-        manga_previous = self.get_manga_by_id(manga_id)
-        print(manga_previous)
+        manga_doc = self.get_manga_by_id(manga_id)
         manga = MangaHelper.load_manga_from_json(PathHelper.get_manga_json_path(manga_id))
-        manga_ref = self.store.collection(Constants.firebase.mangas_collection).document(manga.id)
-        manga_ref.set(manga.to_dict_without_link())
-        self.__upload_file(f"{Constants.general.DL_PATH}/{manga.cover_path}", manga.cover_path)
+        if (manga_doc == None):
+            manga_doc = MangaDoc(manga.id, manga.title, manga.cover_path, manga.authors, manga.genres, manga.status)
+            manga_ref = self.store.collection(Constants.firebase.mangas_collection).document(manga_doc.id)
+            manga_ref.set(manga_doc.to_dict())
+            self.__upload_file(f"{Constants.general.DL_PATH}/{manga_doc.cover_path}", manga_doc.cover_path)
+    
