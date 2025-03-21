@@ -1,5 +1,6 @@
 import argparse
 import os
+import shutil
 import sys
 from constants import Constants
 from entities.chapter_patterns import ChapterPatterns
@@ -58,6 +59,8 @@ def check_manga(manga_id: str) -> None:
                     raise ValueError(f"missing pages")
             except ValueError as ve:
                 print(f"/!\\ {manga_id} ({chapter.number}) : {ve}")
+                if "Failed to load json file" in str(ve) and os.path.exists(path):
+                    shutil.rmtree(path)
             except Exception as e:
                 print(f"/!\\ {manga_id} ({chapter.number}) : Unable to load json file {json_path} {e}")
     except Exception as e:
