@@ -14,7 +14,7 @@ def get_manga_ids() -> MangaList:
     return FileHelper.load_json_file(Constants.general.MANGA_IDS_JSON, MangaList.from_dict, allow_missing=True)
 
 def download_manga(manga_id: str, need_to_add: bool = False) -> None:
-    print(f"# Downloading {manga_id} ...")
+    print(f"\n# Downloading {manga_id} ...")
     if need_to_add:
         manga_list = FileHelper.load_json_file(Constants.general.MANGA_IDS_JSON, MangaList.from_dict)
         if manga_list.add_manga(manga_id):
