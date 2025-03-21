@@ -40,7 +40,7 @@ class FirebaseHelper:
             return None
         
         # Function to delete a manga by ID
-    def __delete_manga(self, manga_id):
+    def delete_manga(self, manga_id):
         manga_ref = self.store.collection(Constants.firebase.mangas_collection).document(manga_id)
         chapters_col = manga_ref.collection(Constants.firebase.chapters_collection).get()
         for chapter in chapters_col:
@@ -98,7 +98,5 @@ class FirebaseHelper:
                 chapter_ref.set(chapter_doc.to_dict())
                 manga_doc.chapters.append(chapter_doc.number)
                 manga_ref = self.store.collection(Constants.firebase.mangas_collection).document(manga_doc.id)
-                manga_ref.set(manga_doc.to_dict())  
-                
-        self.__delete_manga(manga_id)
+                manga_ref.set(manga_doc.to_dict())
     
