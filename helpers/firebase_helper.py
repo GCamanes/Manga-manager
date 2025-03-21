@@ -42,11 +42,20 @@ class FirebaseHelper:
         # Function to delete a manga by ID
     def delete_manga(self, manga_id):
         manga_ref = self.store.collection(Constants.firebase.mangas_collection).document(manga_id)
-        chapters_col = manga_ref.collection(Constants.firebase.chapters_collection).get()
-        for chapter in chapters_col:
-            self.store.collection(Constants.firebase.mangas_collection).document(manga_id) \
-                .collection(Constants.firebase.chapters_collection).document(chapter.id).delete()
+        chapters_col = manga_ref.collection(Constants.firebase.chapters_collection)
+        self.__delete_collection(chapters_col, 50)
         manga_ref.delete()
+        
+    def __delete_collection(self, coll_ref, batch_size):
+        if batch_size == 0:
+            return
+        docs = coll_ref.list_documents(page_size=batch_size)
+        deleted = 0
+        for doc in docs:
+            doc.delete()
+            deleted = deleted + 1
+        if deleted >= batch_size:
+            return self.__delete_collection(coll_ref, batch_size)
     
     def __upload_file(self, local_path: str, storage_path: str) -> None:
         # Create blob
