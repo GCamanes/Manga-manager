@@ -14,6 +14,7 @@ class Constants:
     class firebase:
         service_account_key = "ServiceAccountKey.json"
         mangas_collection = "mangas"
+        chapters_collection = "chapters"
         
     class chapter:
         FILTERS = ["ch-", "chapter-"]
