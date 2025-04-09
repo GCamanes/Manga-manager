@@ -5,6 +5,11 @@
         ],
         "chapter_fix": {}
     },
+    "10953-en-one-piece": {
+        "chapter_fix": {
+            "2843445-vol-32-chapter-bonus-straw-hat-theater-sea-concert": "303-1"
+        }
+    },
     "11462-en-mobile-suit-gundam-the-origin": {
         "black_list": [
             "1380380-vol-1"
@@ -19,11 +24,14 @@
         "black_list": [
             "3319995-vol-01-ch-001-5-first-draft-storyboard-for-chapter-1"
         ],
-        "chapter_fix": {}
+        "chapter_fix": {
+            "2816131-vol-5-side-story-ilse-s-notebook": "18-1",
+            "2816120-vol-3-side-story-captain-levi": "9-1"
+        }
     },
     "12502-en-gantz": {
         "black_list": [
-            "1402291-vol-1"
+            "1619882-vol-1"
         ],
         "chapter_fix": {}
     },
@@ -31,7 +39,14 @@
         "black_list": [
             "1402291-vol-1"
         ],
-        "chapter_fix": {}
+        "chapter_fix": {
+            "3452543-vol-7-special": "25-1",
+            "3452536-vol-6-special": "20-1",
+            "3452428-vol-4-special": "13-1",
+            "3452325-vol-3-special": "10-1",
+            "3452321-vol-2-special": "7-6",
+            "3452314-vol-1-special": "4-1"
+        }
     },
     "15427-en-tokyo-ghoul": {
         "black_list": [
@@ -41,10 +56,12 @@
     },
     "29262-en-black-clover": {
         "black_list": [
+            "3722068-page-192-two-bright-red-fists",
             "1385451-vol-1"
         ],
         "chapter_fix": {
-            "2675719-423682-g7": "297"
+            "2675719-423682-g7": "297",
+            "3721871-chapter-oneshot-who-will-the-world-smile-at": "0"
         }
     },
     "10003-en-fullmetal-alchemist": {
@@ -156,6 +173,7 @@
             "8250412-fanart": "195-1",
             "7705635-chapter-extra-bonus-chapter": "167-2",
             "7705638-chapter-extra": "167-1",
+            "6622703-chapter-extra": "149-1",
             "3923132-vol-tbd-ch-142": "143",
             "2611069-ch-185": "136",
             "2611070-ch-184": "135",
@@ -199,6 +217,16 @@
             "1333582-vol-3"
         ],
         "chapter_fix": {}
+    },
+    "55150-en-jujutsu-kaisen": {
+        "black_list": [
+            "7290393-notice-190",
+            "6617531-notice-this-week-s-chapter"
+        ],
+        "chapter_fix": {
+            "3743820-the-origin-of-obedience-part-2": "55-1",
+            "3743789-chapter-jujutsu-kaisen-jump-festa-2019-short": "25-1"
+        }
     },
     "74763-en-chainsaw-man": {
         "black_list": [
