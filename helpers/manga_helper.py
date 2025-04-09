@@ -4,10 +4,10 @@ import sys
 from bs4 import BeautifulSoup
 import requests
 from constants import Constants
-from entities.chapter_customs import ChapterCustoms
-from entities.chapter_info import ChapterInfo
-from entities.chapter_pages_info import ChapterPagesInfo
-from entities.manga_info import MangaInfo
+from entities.download.chapter_customs import ChapterCustoms
+from entities.download.chapter_info import ChapterInfo
+from entities.download.chapter_pages_info import ChapterPagesInfo
+from entities.download.manga_info import MangaInfo
 from helpers.chapter_helper import ChapterHelper
 from helpers.file_helper import FileHelper
 from helpers.path_helper import PathHelper

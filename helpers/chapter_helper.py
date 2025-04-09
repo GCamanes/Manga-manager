@@ -6,8 +6,8 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from bs4 import BeautifulSoup
 from constants import Constants
-from entities.chapter_customs import ChapterCustomsEntry
-from entities.chapter_pages_info import ChapterPagesInfo
+from entities.download.chapter_customs import ChapterCustomsEntry
+from entities.download.chapter_pages_info import ChapterPagesInfo
 from helpers.file_helper import FileHelper
 from helpers.path_helper import PathHelper
 

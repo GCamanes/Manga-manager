@@ -7,8 +7,8 @@ import firebase_admin
 from firebase_admin import credentials, firestore, storage
 
 from constants import Constants
-from entities.chapter_doc import ChapterDoc
-from entities.manga_doc import MangaDoc
+from entities.firebase.chapter_doc import ChapterDoc
+from entities.firebase.manga_doc import MangaDoc
 from helpers.manga_helper import MangaHelper
 from helpers.path_helper import PathHelper
 

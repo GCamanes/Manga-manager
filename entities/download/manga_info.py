@@ -1,6 +1,6 @@
 
 import re
-from entities.chapter_info import ChapterInfo
+from entities.download.chapter_info import ChapterInfo
 from helpers.string_helper import StringHelper
 
 

@@ -1,8 +1,8 @@
 import os
 import shutil
 from constants import Constants
-from entities.chapter_patterns import ChapterPatterns
-from entities.manga_list import MangaList
+from entities.download.chapter_patterns import ChapterPatterns
+from entities.download.manga_list import MangaList
 from helpers.chapter_helper import ChapterHelper
 from helpers.file_helper import FileHelper
 from helpers.manga_helper import MangaHelper
