@@ -75,7 +75,7 @@ class ChapterHelper:
         
     @staticmethod
     def save_chapter_to_json(chapter_pages_info: ChapterPagesInfo) -> None:
-        path = PathHelper.get_chapter_json_path(chapter_pages_info.manga_id, chapter_pages_info.number)
+        path = PathHelper.get_chapter_json_path(chapter_pages_info.firebase_id, chapter_pages_info.number)
         FileHelper.save_json_file(path, chapter_pages_info.to_dict())
 
     @staticmethod

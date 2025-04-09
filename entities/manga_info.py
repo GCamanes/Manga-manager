@@ -6,9 +6,9 @@ from helpers.string_helper import StringHelper
 
 class MangaInfo:
     """Represents a manga with its information and list of chapters."""
-    def __init__(self, id: str , title: str , cover_path: str, authors: list[str], genres: list[str], status: str , chapters: "list[ChapterInfo]" = None):
+    def __init__(self, id: str , firebase_id: str, title: str , cover_path: str, authors: list[str], genres: list[str], status: str , chapters: "list[ChapterInfo]" = None):
         self.id: str  = id
-        self.firebase_id: str = StringHelper.remove_up_to_nth_hyphen(id)
+        self.firebase_id: str = firebase_id
         self.title: str  = title
         self.cover_path: str = cover_path
         self.authors: list[str] = authors
