@@ -31,7 +31,7 @@ def download_manga(manga_id: str, need_to_add: bool = False) -> None:
             chapter_patterns.add_pattern(chapter.link.split("/")[-1])
         # Saving chapter patterns
         FileHelper.save_json_file(Constants.general.CHAPTER_PATTERNS_JSON, chapter_patterns.to_dict())
-        #MangaHelper.download_manga(manga=manga_info)
+        MangaHelper.download_manga(manga=manga_info)
     except Exception as e:
         print(e)
         
