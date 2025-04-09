@@ -8,7 +8,7 @@ from helpers.file_helper import FileHelper
 from helpers.manga_helper import MangaHelper
 from helpers.path_helper import PathHelper
 
-class DownloadManager:
+class DownloadHelper:
     def __get_manga_ids() -> MangaList:
         return FileHelper.load_json_file(Constants.general.MANGA_IDS_JSON, MangaList.from_dict, allow_missing=True)
 
@@ -37,10 +37,10 @@ class DownloadManager:
 
     @staticmethod
     def download_all_manga() -> None:
-        manga_list = DownloadManager.__get_manga_ids()
+        manga_list = DownloadHelper.__get_manga_ids()
         FileHelper.save_json_file(Constants.general.MANGA_IDS_JSON, manga_list.to_dict())
         for manga in manga_list.ids:
-            DownloadManager.download_manga(manga, False)
+            DownloadHelper.download_manga(manga, False)
 
     @staticmethod    
     def check_manga(manga_id: str) -> None:
@@ -72,6 +72,6 @@ class DownloadManager:
     def check_all_manga() -> None:
         for manga in os.listdir(Constants.general.DL_PATH):
             if os.path.isdir(os.path.join(Constants.general.DL_PATH, manga)):
-                DownloadManager.check_manga(manga)
+                DownloadHelper.check_manga(manga)
 
     

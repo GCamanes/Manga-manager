@@ -90,7 +90,7 @@ class FirebaseHelper:
 
         # Create a maga docucment on firestore
         if (manga_doc == None):
-            manga_doc = MangaDoc(manga.id, manga.title, manga.cover_path, manga.authors, manga.genres, manga.status)
+            manga_doc = MangaDoc(manga.firebase_id, manga.title, manga.cover_path, manga.authors, manga.genres, manga.status)
             manga_ref = self.store.collection(Constants.firebase.mangas_collection).document(manga_doc.id)
             manga_ref.set(manga_doc.to_dict())
             self.__upload_file(f"{Constants.general.DL_PATH}/{manga_doc.cover_path}", manga_doc.cover_path)
