@@ -131,13 +131,13 @@ class FirebaseHelper:
                 try:
                     sys.stdout.write(f"\r\033[K* chapter {chapter_doc.number} ...")
                     sys.stdout.flush()
-                    for index, page in enumerate(chapter_doc.pages):
+                    """for index, page in enumerate(chapter_doc.pages):
                         percent = math.floor((index + 1) * 100 / len(chapter_doc.pages))
                         barIndex = math.floor(percent/10) 
                         bar = "#" * barIndex + " " * (10 - barIndex)
                         self.__upload_file(f"{Constants.general.DL_PATH}/{page}", page)
                         sys.stdout.write(f"\r\033[K* chapter {chapter_doc.number} : [{bar}] {percent}%")
-                        sys.stdout.flush()
+                        sys.stdout.flush()"""
                     chapter_ref = self.store.collection(Constants.firebase.mangas_collection).document(manga_doc.id)\
                         .collection(Constants.firebase.chapters_collection).document(chapter_doc.number)
                     chapter_ref.set(chapter_doc.to_dict())
@@ -150,3 +150,13 @@ class FirebaseHelper:
                 except Exception as e:
                     print(f"/!\\ ERROR while uplaoding {manga_id} {chapter_doc.number} : {e}")
                     sys.exit(1)
+     
+    def uplaod_all_mangas(self) -> None:
+        for manga in os.listdir(Constants.general.DL_PATH):
+            if os.path.isdir(os.path.join(Constants.general.DL_PATH, manga)):
+                self.upload_manga(manga)
+
+    def delete_all_mangas(self) -> None:
+        for manga in os.listdir(Constants.general.DL_PATH):
+            if os.path.isdir(os.path.join(Constants.general.DL_PATH, manga)):
+                self.delete_manga(manga)

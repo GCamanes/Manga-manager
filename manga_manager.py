@@ -24,6 +24,12 @@ if __name__ == "__main__":
     parser.add_argument('-d', '--delete', nargs=1,
                     help='delete manga from firestore (use "manga-id")',
                     action='store', type=str)
+    parser.add_argument('--uploadall',
+                    help='upload all downloaded mangas to firestore',
+                    action="store_true")
+    parser.add_argument('--deleteall',
+                    help='delete all mangas from firestore',
+                    action="store_true")
 
     args = parser.parse_args(sys.argv[1:])
     
@@ -45,6 +51,12 @@ if __name__ == "__main__":
         sys.exit()
     elif args.delete is not None:
         FirebaseHelper().delete_manga(args.delete[0])
+        sys.exit()
+    elif args.uploadall:
+        FirebaseHelper().uplaod_all_mangas()
+        sys.exit()
+    elif args.deleteall:
+        FirebaseHelper().delete_all_mangas()
         sys.exit()
 
     sys.exit()
