@@ -23,8 +23,11 @@ class MangasListDoc:
         for i, manga in enumerate(self.mangas):
             if manga.id == new_manga.id:
                 self.mangas[i] = new_manga
-                return
-        self.mangas.append(new_manga)
+                break
+        else:
+            self.mangas.append(new_manga)
+
+        self.mangas.sort(key=lambda m: m.id)
         
     def remove_if_present(self, manga_id: str):
         self.mangas = [
