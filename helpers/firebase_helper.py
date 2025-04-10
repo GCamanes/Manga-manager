@@ -101,7 +101,11 @@ class FirebaseHelper:
         directories = sorted([d for d in os.listdir(manga_path) if os.path.isdir(os.path.join(manga_path, d))])
         for directory in directories:
             chapter_path = f"{manga_path}/{directory}"
-            pages = [f"{manga_doc.id}/{directory}/{f}" for f in os.listdir(chapter_path) if os.path.isfile(os.path.join(chapter_path, f))]
+            pages = sorted([
+                f"{manga_doc.id}/{directory}/{f}"
+                for f in os.listdir(chapter_path)
+                if os.path.isfile(os.path.join(chapter_path, f)) and not f.lower().endswith(".json")
+            ])
             chapter_doc = ChapterDoc(directory, pages)
             chapter_docs.append(chapter_doc)
         return chapter_docs
