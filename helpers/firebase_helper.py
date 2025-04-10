@@ -9,6 +9,8 @@ from firebase_admin import credentials, firestore, storage
 from constants import Constants
 from entities.firebase.chapter_doc import ChapterDoc
 from entities.firebase.manga_doc import MangaDoc
+from entities.firebase.manga_doc_light import MangaDocLight
+from entities.firebase.mangas_list_doc import MangasListDoc
 from helpers.manga_helper import MangaHelper
 from helpers.path_helper import PathHelper
 
@@ -39,13 +41,28 @@ class FirebaseHelper:
             return MangaDoc.from_dict(doc.to_dict())
         else:
             return None
+
+    def get_mangas_list_doc(self) -> MangasListDoc:
+        mangas_List_ref = self.store.collection(Constants.firebase.mangas_list_collection).document(Constants.firebase.mangas_list_doc)
+        doc = mangas_List_ref.get()
         
-        # Function to delete a manga by ID
+        if doc.exists:
+            return MangasListDoc.from_dict(doc.to_dict())
+        else:
+            return MangasListDoc()
+        
+    def save_mangas_list_doc(self, mangas_list_doc: MangasListDoc):
+        mangas_List_ref = self.store.collection(Constants.firebase.mangas_list_collection).document(Constants.firebase.mangas_list_doc)
+        mangas_List_ref.set(mangas_list_doc.to_dict())
+
     def delete_manga(self, manga_id):
         manga_ref = self.store.collection(Constants.firebase.mangas_collection).document(manga_id)
         chapters_col = manga_ref.collection(Constants.firebase.chapters_collection)
         self.__delete_collection(chapters_col, 50)
         manga_ref.delete()
+        mangas_list = self.get_mangas_list_doc()
+        mangas_list.remove_if_present(manga_id)
+        self.save_mangas_list_doc(mangas_list)
         
     def __delete_collection(self, coll_ref, batch_size):
         if batch_size == 0:
@@ -119,6 +136,10 @@ class FirebaseHelper:
                     manga_doc.chapters.append(chapter_doc.number)
                     manga_ref = self.store.collection(Constants.firebase.mangas_collection).document(manga_doc.id)
                     manga_ref.set(manga_doc.to_dict())
+                    # Save manga info in manga list collection
+                    mangas_list_doc = self.get_mangas_list_doc()
+                    mangas_list_doc.add_or_replace(MangaDocLight.from_other(manga_doc, chapter_doc.number))
+                    self.save_mangas_list_doc(mangas_list_doc)
                 except Exception as e:
                     print(f"/!\\ ERROR while uplaoding {manga_id} {chapter_doc.number} : {e}")
                     sys.exit(1)

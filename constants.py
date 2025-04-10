@@ -15,6 +15,8 @@ class Constants:
         service_account_key = "ServiceAccountKey.json"
         mangas_collection = "mangas"
         chapters_collection = "chapters"
+        mangas_list_collection = "mangas-list"
+        mangas_list_doc = "mangas-list"
         
     class chapter:
         FILTERS = ["ch-", "chapter-"]

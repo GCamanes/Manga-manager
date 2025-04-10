@@ -1,3 +1,5 @@
+from entities.firebase.manga_doc import MangaDoc
+
 class MangaDocLight:
     """Represents a manga with its information and list of chapters."""
     def __init__(self, id: str , title: str , cover_path: str, authors: list[str], genres: list[str], status: str , last_chapter: str = None):
@@ -8,6 +10,18 @@ class MangaDocLight:
         self.genres: list[str] = genres
         self.status: str  = status
         self.last_chapter: str = last_chapter
+        
+    @classmethod
+    def from_other(cls, other: "MangaDoc", chapter: str):
+        return cls(
+            id=other.id,
+            title = other.title,
+            cover_path = other.cover_path,
+            authors = other.authors,
+            genres = other.genres,
+            status = other.status,
+            last_chapter = chapter,
+        )
 
     def __repr__(self):
         return (f"#### Manga doc {self.title}\n* id={self.id}\n* cover={self.cover_path}\n* authors={self.authors}\n* genres={self.genres}\n"

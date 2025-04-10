@@ -25,3 +25,8 @@ class MangasListDoc:
                 self.mangas[i] = new_manga
                 return
         self.mangas.append(new_manga)
+        
+    def remove_if_present(self, manga_id: str):
+        self.mangas = [
+            manga for manga in self.mangas if manga.id != manga_id
+        ]
