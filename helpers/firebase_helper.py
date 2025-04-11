@@ -111,7 +111,7 @@ class FirebaseHelper:
         return chapter_docs
     
     def upload_manga(self, manga_id: str) -> None:
-        print(f"# Uploading {manga_id} ...")
+        print(f"\n# Uploading {manga_id} ...")
         # Get manga doc from firestore
         manga_doc = self.get_manga_by_id(manga_id)
         # Load local manga info
@@ -136,6 +136,7 @@ class FirebaseHelper:
                     sys.stdout.write(f"\r\033[K* chapter {chapter_doc.number} ...")
                     sys.stdout.flush()
                     for index, page in enumerate(chapter_doc.pages):
+                        print(f"{chapter_doc.number} {page}")
                         percent = math.floor((index + 1) * 100 / len(chapter_doc.pages))
                         barIndex = math.floor(percent/10) 
                         bar = "#" * barIndex + " " * (10 - barIndex)
