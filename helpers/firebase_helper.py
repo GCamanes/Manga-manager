@@ -136,7 +136,6 @@ class FirebaseHelper:
                     sys.stdout.write(f"\r\033[K* chapter {chapter_doc.number} ...")
                     sys.stdout.flush()
                     for index, page in enumerate(chapter_doc.pages):
-                        print(f"{chapter_doc.number} {page}")
                         percent = math.floor((index + 1) * 100 / len(chapter_doc.pages))
                         barIndex = math.floor(percent/10) 
                         bar = "#" * barIndex + " " * (10 - barIndex)
