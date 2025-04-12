@@ -1,13 +1,13 @@
 class MangaDoc:
     """Represents a manga with its information and list of chapters."""
-    def __init__(self, id: str , title: str , cover_path: str, authors: list[str], genres: list[str], status: str , chapters: list[str] = []):
+    def __init__(self, id: str , title: str , cover_path: str, authors: list[str], genres: list[str], status: str , chapters: list[str] = None):
         self.id: str  = id
         self.title: str  = title
         self.cover_path: str = cover_path
         self.authors: list[str] = authors
         self.genres: list[str] = genres
         self.status: str  = status
-        self.chapters: list[str] = chapters
+        self.chapters: list[str] = chapters or []
 
     def __repr__(self):
         return (f"#### Manga doc {self.title}\n* id={self.id}\n* cover={self.cover_path}\n* authors={self.authors}\n* genres={self.genres}\n"

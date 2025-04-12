@@ -95,14 +95,14 @@ class FirebaseHelper:
         blob.metadata = metadata
         blob.upload_from_filename(local_path)
         
-    def __get_all_chapters(self, manga_doc: MangaDoc) -> list[ChapterDoc]:
+    def __get_all_chapters(self, manga_id: str) -> list[ChapterDoc]:
         chapter_docs = []
-        manga_path = PathHelper.get_manga_path(manga_doc.id)
+        manga_path = PathHelper.get_manga_path(manga_id)
         directories = sorted([d for d in os.listdir(manga_path) if os.path.isdir(os.path.join(manga_path, d))])
         for directory in directories:
             chapter_path = f"{manga_path}/{directory}"
             pages = sorted([
-                f"{manga_doc.id}/{directory}/{f}"
+                f"{manga_id}/{directory}/{f}"
                 for f in os.listdir(chapter_path)
                 if os.path.isfile(os.path.join(chapter_path, f)) and not f.lower().endswith(".json")
             ])
@@ -128,7 +128,7 @@ class FirebaseHelper:
             manga_doc.status = manga.status
 
         # Get all chapters from directories
-        chapter_docs = self.__get_all_chapters(manga_doc)
+        chapter_docs = self.__get_all_chapters(manga_id)
         # Upload each chapter and update manga doc accordingly
         for chapter_doc in chapter_docs:
             if chapter_doc.number not in manga_doc.chapters:
@@ -156,11 +156,11 @@ class FirebaseHelper:
                     sys.exit(1)
      
     def uplaod_all_mangas(self) -> None:
-        for manga in os.listdir(Constants.general.DL_PATH):
+        for manga in sorted(os.listdir(Constants.general.DL_PATH)):
             if os.path.isdir(os.path.join(Constants.general.DL_PATH, manga)):
                 self.upload_manga(manga)
 
     def delete_all_mangas(self) -> None:
-        for manga in os.listdir(Constants.general.DL_PATH):
+        for manga in sorted(os.listdir(Constants.general.DL_PATH)):
             if os.path.isdir(os.path.join(Constants.general.DL_PATH, manga)):
                 self.delete_manga(manga)
