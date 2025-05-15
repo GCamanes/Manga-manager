@@ -45,6 +45,7 @@ class MangaHelper:
             status = status_parent.select_one('span.font-bold.uppercase').text.strip()
             # Extract image URL
             cover_path = main_element.select_one('img').get("src")
+            cover_path = f"{Constants.general.WEBSITE}{cover_path}"
 
             # Extract chapters list
             chapter_list_div = soup.find('div', attrs={'data-name': 'chapter-list'})
